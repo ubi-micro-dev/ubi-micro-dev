@@ -39,10 +39,10 @@ cd "$dir"
 printf '%s\n' "${packages[@]}" > keep
 cat >> keep <<'EOF'
 bash
-coreutils-single
 EOF
 
 cat > disallow <<'EOF'
+coreutils-single
 alsa-lib
 copy-jdk-configs
 lua
