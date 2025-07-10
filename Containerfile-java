@@ -1,0 +1,22 @@
+ARG UBI_VERSION=9
+ARG JDK_VERSION=21
+ARG JDK_PKG=java-21-openjdk-headless
+
+FROM registry.access.redhat.com/ubi${UBI_VERSION} AS ubi-micro-build
+ARG JDK_PKG
+
+ADD ubi-micro-dev.sh /usr/bin
+RUN ubi-micro-dev.sh $JDK_PKG glibc-langpack-en \
+    && groupadd ubi-micro-dev -g 1001 \
+    && useradd -u 1001 -g ubi-micro-dev -G ubi-micro-dev \
+               -m -d /home/ubi-micro-dev -s /sbin/nologin \
+               -c "ubi-micro-dev user" ubi-micro-dev
+
+FROM registry.access.redhat.com/ubi${UBI_VERSION}-micro
+ENV LANG en_US.UTF-8
+
+LABEL org.opencontainers.image.source="https://github.com/ubi-micro-dev/ubi-micro-dev"
+
+COPY --from=ubi-micro-build /tmp/ubi-micro-dev/rootfs/ /
+
+USER 1001

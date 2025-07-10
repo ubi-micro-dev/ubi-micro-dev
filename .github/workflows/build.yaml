@@ -1,0 +1,199 @@
+name: Build and Scan
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+
+  build-java:
+
+    name: UBI${{ matrix.ubi }} / JDK${{ matrix.jdk }}
+    runs-on: ubuntu-latest       # Ubuntu runners already include Podman
+    permissions:
+      packages: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        ubi: [8, 9, 10]
+        jdk: [8, 17, 21]
+        exclude:
+          - { ubi: 10, jdk: 8  }   # UBI 10 has no Java 8
+          - { ubi: 10, jdk: 17 }   # UBI 10 has no Java 17
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Podman login to GHCR
+        if: github.event_name != 'pull_request'
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & push image
+        id: build
+        env:
+          UBI_VER:  ${{ matrix.ubi }}
+          JDK_VER:  ${{ matrix.jdk }}
+          OWNER:    ${{ github.repository }}
+          SHOULD_PUSH: ${{ github.event_name != 'pull_request' }}
+        run: |
+          set -euo pipefail
+
+          # Map “8” to the weird RHEL package name
+          if [ "$JDK_VER" = "8" ]; then
+            JDK_PKG=java-1.8.0-openjdk-headless
+          else
+            JDK_PKG=java-${JDK_VER}-openjdk-headless
+          fi
+
+          IMAGE=ghcr.io/ubi-micro-dev/ubi${UBI_VER}-micro-dev-openjdk-${JDK_VER}:latest
+          echo "🏗  Building $IMAGE"
+
+          podman build \
+            --build-arg UBI_VERSION=$UBI_VER \
+            --build-arg JDK_VERSION=$JDK_VER \
+            --build-arg JDK_PKG=$JDK_PKG \
+            -f Containerfile-java \
+            -t $IMAGE .
+
+          if [ "$SHOULD_PUSH" = "true" ]; then
+            echo "📤  Pushing $IMAGE"
+            podman push $IMAGE
+          else
+            echo "🧪  PR build -- image not pushed"
+          fi
+          echo "$IMAGE" > image.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          # unique name per leg so nothing overwrites
+          name: img-${{ matrix.ubi || 'ubi' }}-${{ matrix.jdk || matrix.node }}
+          path: image.txt
+
+  build-node:
+
+    name: UBI${{ matrix.ubi }} / Node.JS ${{ matrix.node }}
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { ubi: '8',  node: '16',  module: '--module=nodejs:16' }
+          - { ubi: '8',  node: '18',  module: '--module=nodejs:18' }
+          - { ubi: '8',  node: '20',  module: '--module=nodejs:20' }
+          - { ubi: '8',  node: '22',  module: '--module=nodejs:22' }
+          - { ubi: '9',  node: '16',  module: '' }
+          - { ubi: '9',  node: '18',  module: '--module=nodejs:18' }
+          - { ubi: '9',  node: '20',  module: '--module=nodejs:20' }
+          - { ubi: '9',  node: '22',  module: '--module=nodejs:22' }
+          - { ubi: '10', node: '22',  module: '' }
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Podman login to GHCR
+        if: github.event_name != 'pull_request'
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & push image
+        env:
+          UBI_VER:  ${{ matrix.ubi }}
+          NODE_VER: ${{ matrix.node }}
+          OWNER:    ${{ github.repository }}
+          SHOULD_PUSH: ${{ github.event_name != 'pull_request' }}
+        run: |
+          set -euo pipefail
+
+          IMAGE=ghcr.io/ubi-micro-dev/ubi${UBI_VER}-micro-dev-nodejs-${NODE_VER}:latest
+          echo "🏗  Building $IMAGE"
+
+          podman build \
+            --build-arg UBI_VERSION=$UBI_VER \
+            --build-arg NODE_VERSION=$NODE_VER \
+            --build-arg MODULE=${{ matrix.module }} \
+            -f Containerfile-node \
+            -t $IMAGE .
+
+          if [ "$SHOULD_PUSH" = "true" ]; then
+            echo "📤  Pushing $IMAGE"
+            podman push $IMAGE
+          else
+            echo "🧪  PR build -- image not pushed"
+          fi
+          echo "$IMAGE" > image.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          # unique name per leg so nothing overwrites
+          name: img-${{ matrix.ubi || 'ubi' }}-${{ matrix.jdk || matrix.node }}
+          path: image.txt
+
+  scan-images:
+    name: Scan All Images
+    needs: [build-java, build-node]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: Homebrew/actions/setup-homebrew@master
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Install tools
+        run: brew install trivy grype ocicl sqlite oras && ocicl setup > ~/.sbclrc && ocicl install
+        shell: bash
+
+      - name: Emulate Docker CLI with Podman
+        uses: k8s-crafts/podman-cli-action@v1
+        with:
+          podman_api: true
+
+      - name: Collect image list
+        uses: actions/download-artifact@v4
+        with:
+          path: all-images
+
+      - name: Generate reports
+        run: |
+          set -x
+          cat all-images/*/image.txt > images.list
+          cat images.list
+          echo ${{ github.token }} | oras login ghcr.io -u ${{ github.actor }} --password-stdin
+          mkdir _site
+          cat images.list | ./run.sh
+          cp index.html _site
+
+      - name: Upload artifact
+        # Automatically uploads an artifact from the './_site' directory by default
+        uses: actions/upload-pages-artifact@v3
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: scan-images
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

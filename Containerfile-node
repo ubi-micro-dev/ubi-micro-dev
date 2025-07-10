@@ -1,0 +1,23 @@
+ARG UBI_VERSION=9
+ARG NODE_VERSION=18
+ARG MODULE=nodejs-18
+
+FROM registry.access.redhat.com/ubi${UBI_VERSION} AS ubi-micro-build
+ARG NODE_VERSION
+ARG MODULE
+
+ADD ubi-micro-dev.sh /usr/bin/
+RUN ubi-micro-dev.sh ${MODULE} nodejs npm glibc-langpack-en \
+    && groupadd ubi-micro-dev -g 1001 \
+    && useradd -u 1001 -g ubi-micro-dev -G ubi-micro-dev \
+               -m -d /home/ubi-micro-dev -s /sbin/nologin \
+               -c "ubi-micro-dev user" ubi-micro-dev
+
+FROM registry.access.redhat.com/ubi${UBI_VERSION}-micro
+ENV LANG en_US.UTF-8
+
+LABEL org.opencontainers.image.source="https://github.com/ubi-micro-dev/ubi-micro-dev"
+
+COPY --from=ubi-micro-build /tmp/ubi-micro-dev/rootfs/ /
+
+USER 1001
