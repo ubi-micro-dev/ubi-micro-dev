@@ -42,7 +42,7 @@ bash
 EOF
 
 cat > disallow <<'EOF'
-coreutils-single
+coreutils
 alsa-lib
 copy-jdk-configs
 lua
