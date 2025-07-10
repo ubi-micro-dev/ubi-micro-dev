@@ -42,23 +42,24 @@ bash
 EOF
 
 cat > disallow <<'EOF'
-coreutils
 alsa-lib
-copy-jdk-configs
-lua
-cups-libs
 chkconfig
-info
+copy-jdk-configs
+coreutils
+cups-libs
 gawk
+info
+less
+lua
+ncurses-base
+ncurses-libs
+p11-kit
 platform-python
 platform-python-setuptools
 python3
 python3-libs
 python3-pip-wheel
 python3-setuptools-wheel
-p11-kit
-ncurses-base
-ncurses-libs
 sqlite-libs
 EOF
 
