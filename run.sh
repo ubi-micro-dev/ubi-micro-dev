@@ -31,19 +31,17 @@ function retry_command {
 
 function trivy_scan {
     # Perform trivy scans
-    IMG=$(echo ${2} | sed 's/\//\-\-/g')
-    IMG=$(echo ${IMG} | sed 's/:/\-\-/g')
-    mkdir -p ${1}/trivy
-    retry_command trivy -f json -o ${1}/trivy/${IMG}.json image ${2}
+    IMG=$(echo ${1} | sed 's/\//\-\-/g' | sed 's/:/\-\-/g')
+    mkdir -p trivy
+    retry_command trivy -f json -o trivy/${IMG}.json image ${1}
 }
 
 function grype_scan {
     # Perform grype scans
-    IMG=$(echo ${2} | sed 's/\//\-\-/g')
-    IMG=$(echo ${IMG} | sed 's/:/\-\-/g')
-    mkdir -p ${1}/grype
-    retry_command grype -o json=${1}/grype/${IMG}.json ${2}
-    cat ${1}/grype/${IMG}.json
+    IMG=$(echo ${1} | sed 's/\//\-\-/g' | sed 's/:/\-\-/g')
+    mkdir -p grype
+    retry_command grype -o json=grype/${IMG}.json ${1}
+    cat grype/${IMG}.json
 }
 
 # Clone the github advisory database
@@ -53,16 +51,14 @@ cat ./images.list
 
 VERSION=$(date +%Y%m%d)
 while read -r IMAGE; do
-    SCANDIR=${IMAGE}
     echo "===== Processing ${IMAGE} =========================="
-    trivy_scan ${SCANDIR} ${IMAGE}
-    grype_scan ${SCANDIR} ${IMAGE}
+    trivy_scan ${IMAGE}
+    grype_scan ${IMAGE}
 
-    IMG=$(echo ${IMAGE} | sed 's/\//\-\-/g')
-    IMG=$(echo ${IMG} | sed 's/:/\-\-/g')
+    IMG=$(echo ${IMAGE} | sed 's/\//\-\-/g' | sed 's/:/\-\-/g')
     VERSION=$(date +%Y%m%d)
 
-    sbcl --non-interactive --eval "(asdf:load-system :report)" --eval "(report:main)" $(pwd)/_site/${IMG}.html ${SCANDIR}/grype/* ${SCANDIR}/trivy/* ${IMAGE} || true
+    sbcl --non-interactive --eval "(asdf:load-system :report)" --eval "(report:main)" $(pwd)/_site/${IMG}.html grype/* trivy/* ${IMAGE} || true
     sbcl --eval "(asdf:load-system :report)" --eval "(report::make-index.html)"
 
     find _site -name \*.html
