@@ -43,6 +43,7 @@ function grype_scan {
     IMG=$(echo ${IMG} | sed 's/:/\-\-/g')
     mkdir -p ${1}/grype
     retry_command grype -o json=${1}/grype/${IMG}.json ${2}
+    cat ${1}/grype/${IMG}.json
 }
 
 # Clone the github advisory database
