@@ -8,8 +8,9 @@ ARG MODULE
 
 ADD ubi-micro-dev.sh /usr/bin/
 RUN ubi-micro-dev.sh ${MODULE} nodejs npm glibc-langpack-en \
-    && groupadd ubi-micro-dev -g 1001 \
-    && useradd -u 1001 -g ubi-micro-dev -G ubi-micro-dev \
+    && groupadd -R /tmp/ubi-micro-dev/rootfs/ ubi-micro-dev -g 1001 \
+    && useradd -R /tmp/ubi-micro-dev/rootfs/ \
+               -u 1001 -g ubi-micro-dev -G ubi-micro-dev \
                -m -d /home/ubi-micro-dev -s /sbin/nologin \
                -c "ubi-micro-dev user" ubi-micro-dev
 
