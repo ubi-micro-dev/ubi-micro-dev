@@ -45,6 +45,25 @@ and Red Hat ships newer versions of OpenJDK that already include this
 fix.  The Red Hat product security team has been asked to modify the
 metadata associated with this CVE."))
 
+    ((find cve '("CVE-2024-21147"
+                 "CVE-2024-21217"
+                 "CVE-2024-21068"
+                 "CVE-2024-21011"
+                 "CVE-2024-21235"
+                 "CVE-2024-21138"
+                 "CVE-2024-21208"
+                 "CVE-2024-21145"
+                 "CVE-2024-21131"
+                 "CVE-2024-21140"
+                 "CVE-2024-21012"
+                 "CVE-2024-21210"
+                 "CVE-2025-21502") :test #'string=)
+     '("False Positive"
+       "This is a false positive.  This vulnerability has been fixed in the upstream OpenJDK project,
+and Red Hat ships newer versions of OpenJDK that already include this
+fix.  The Red Hat product security team has been asked to modify the
+metadata associated with this CVE."))
+
     ;; --- End of ubi-micro-dev opinions ----------------------------------
 
     ((and (string= cve "CVE-2024-41909")
