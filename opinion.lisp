@@ -64,6 +64,10 @@ and Red Hat ships newer versions of OpenJDK that already include this
 fix.  The Red Hat product security team has been asked to modify the
 metadata associated with this CVE."))
 
+    ((string= cve "CVE-2023-45918")
+     '("Ignorable"
+       "This is a junk CVE that is not a security issue and was withdrawn by its CNA.  Consider a global exception policy for this CVE.  The Red Hat product security team has been asked to modify the metadata associated with this CVE."))
+
     ;; --- End of ubi-micro-dev opinions ----------------------------------
 
     ((and (string= cve "CVE-2024-41909")
