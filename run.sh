@@ -58,8 +58,9 @@ while read -r IMAGE; do
     IMG=$(echo ${IMAGE} | sed 's/\//\-\-/g' | sed 's/:/\-\-/g')
     VERSION=$(date +%Y%m%d)
 
-    sbcl --non-interactive --eval "(asdf:load-system :report)" --eval "(report:main)" $(pwd)/_site/${IMG}.html grype/* trivy/* ${IMAGE} || true
-    sbcl --eval "(asdf:load-system :report)" --eval "(report::make-index.html)"
+    sbcl --non-interactive --eval "(asdf:load-system :report)" --eval "(report:main)" $(pwd)/_site/${IMG}.html grype/${IMG}.json trivy/${IMG}.json ${IMAGE} || true
 
     find _site -name \*.html
 done
+
+sbcl --eval "(asdf:load-system :report)" --eval "(report::make-index.html)"
