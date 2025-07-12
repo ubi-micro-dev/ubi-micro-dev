@@ -125,7 +125,7 @@ echo >&2
 
 echo "==> Erasing packages" >&2
 set -x
-<remove xargs rpm -r "$rootfs" --erase --nodeps --allmatches
+<remove xargs rpm -r "$rootfs" --erase --nodeps --noscripts --allmatches
 { set +x; } 2>/dev/null
 
 echo "==> Packages erased ok!" >&2
