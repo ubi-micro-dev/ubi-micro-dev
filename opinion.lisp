@@ -78,7 +78,7 @@ metadata associated with this CVE."))
 
     ((and (string= cve "CVE-2022-41409")
 	  (every (lambda (s)
-		   (not (alexandria:string-prefix-p "pcre2-tools" s)))
+		   (not (uiop:string-prefix-p "pcre2-tools" s)))
 		 locations))
      '("False Positive"
        "This is a false positive.  The vulnerability only exists in the pcre2-tools package, which is not installed in this container image."))
