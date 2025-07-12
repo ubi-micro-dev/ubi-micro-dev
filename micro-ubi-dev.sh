@@ -39,8 +39,9 @@ cd "$dir"
 printf '%s\n' "${packages[@]}" > keep
 cat >> keep <<'EOF'
 bash
-coreutils-single
 EOF
+
+# keep used to include coreutils-single
 
 cat > disallow <<'EOF'
 alsa-lib
@@ -60,6 +61,7 @@ p11-kit
 ncurses-base
 ncurses-libs
 sqlite-libs
+nspr nss nss-softokn nss-softokn-freebl nss-sysinit nss-util
 EOF
 
 sort -u keep -o keep
@@ -80,10 +82,12 @@ dnf install -y findutils diffutils   # tools the script itself needs
 
 # Enable modules inside the chroot before installing packages there
 for m in "${modules[@]}"; do
-  dnf -y --installroot "$rootfs" --releasever 9 module enable "$m"
+#  dnf -y --installroot "$rootfs" --releasever 9 module enable "$m"
+    dnf -y --installroot "$rootfs" module enable "$m"
 done
 
-<keep xargs dnf install -y --installroot "$rootfs" --releasever 9 \
+#<keep xargs dnf install -y --installroot "$rootfs" --releasever 9 \
+<keep xargs dnf install -y --installroot "$rootfs" \    
       --setopt install_weak_deps=false --nodocs
 
 dnf --installroot "$rootfs" clean all
