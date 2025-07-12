@@ -30,12 +30,22 @@
 
     ;; --- Start of ubi-micro-dev opinions ----------------------------------
 
+    ((and (string= cve "CVE-2022-27943")
+	  (eq 1 (length locations))
+	  (search "libgcc" (car locations)))
+     '("False Positive"
+       "This is a false positive.  libgcc does not contain the vulnerable code
+found in libiberty/rust-demangle.c.  Scanners are flagging this
+package because it is built from the same source package as libiberty."))
+
     ((and (string= cve "CVE-2025-31345")
 	  (eq 1 (length locations))
 	  (search "headless" (car locations)))
      '("False Positive"
        "This is a false positive.  This CVE only applies to OpenJDK's libawt
-library, which is not included in the \"headless\" package."))
+library, which is not included in the \"headless\" package.  Scanners
+are flagging the headless package because it is built from the same
+source package as the one containing libawt."))
     
     ((string= cve "CVE-2024-54534")
      '("False Positive"
