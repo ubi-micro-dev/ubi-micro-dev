@@ -29,6 +29,14 @@
   (cond
 
     ;; --- Start of ubi-micro-dev opinions ----------------------------------
+
+    ((and (string= cve "CVE-2025-31345")
+	  (eq 1 (length locations))
+	  (search "headless" (car locations)))
+     '("False Positive"
+       "This is a false positive.  This CVE only applies to OpenJDK's libawt
+library, which is not included in the \"headless\" package."))
+    
     ((string= cve "CVE-2024-54534")
      '("False Positive"
        "This is a false positive.  This CVE only applies to OpenJDK's JavaFX
