@@ -68,6 +68,21 @@ metadata associated with this CVE."))
      '("Ignorable"
        "This is a junk CVE that is not a security issue and was withdrawn by its CNA.  Consider a global exception policy for this CVE.  The Red Hat product security team has been asked to modify the metadata associated with this CVE."))
 
+    ((string= cve "CVE-2022-3857")
+     '("Ignorable"
+       "This CVE has been rejected upstream, because this flaw does not exist and was erroneously tested. This issue has been marked as a false-positive - <a href=\"https://sourceforge.net/p/libpng/bugs/300/\">https://sourceforge.net/p/libpng/bugs/300/</a>. Consider a global exception policy for this CVE."))
+
+    ((string= cve "CVE-2022-3857")
+     '("Ignorable"
+       "This CVE has been rejected upstream, because this flaw does not exist and was erroneously tested. This issue has been marked as a false-positive - <a href=\"https://sourceforge.net/p/libpng/bugs/300/\">https://sourceforge.net/p/libpng/bugs/300/</a>. Consider a global exception policy for this CVE."))
+
+    ((and (string= cve "CVE-2022-41409")
+	  (every (lambda (s)
+		   (not (alexandria:string-prefix-p "pcre2-tools" s)))
+		 locations))
+     '("False Positive"
+       "This is a false positive.  The vulnerability only exists in the pcre2-tools package, which is not installed in this container image."))
+
     ;; --- End of ubi-micro-dev opinions ----------------------------------
 
     ((and (string= cve "CVE-2024-41909")

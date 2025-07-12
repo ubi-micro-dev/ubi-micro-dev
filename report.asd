@@ -31,5 +31,6 @@
   :serial t
   :components ((:file "report") (:file "opinion"))
   :depends-on (:cl-json :markup :cl-who :dexador
+	       :alexandria
                :local-time :dbi :trivial-backtrace
                :log4cl :iterate :cl-fad :3bmd))
