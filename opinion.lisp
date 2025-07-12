@@ -38,7 +38,7 @@
 found in libiberty/rust-demangle.c.  Scanners are flagging this
 package because it is built from the same source package as libiberty."))
 
-    ((and (string= cve "CVE-2025-31345")
+    ((and (string= cve "CVE-2025-31344")
 	  (eq 1 (length locations))
 	  (search "headless" (car locations)))
      '("False Positive"
