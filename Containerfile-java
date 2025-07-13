@@ -18,8 +18,8 @@ ENV LANG en_US.UTF-8
 
 LABEL org.opencontainers.image.source="https://github.com/ubi-micro-dev/ubi-micro-dev"
 
-ADD ubi-micro-dev.sh /usr/bin
 COPY --from=ubi-micro-build /tmp/ubi-micro-dev/rootfs/ /
+ADD ubi-micro-dev.sh /usr/bin
 
 WORKDIR /home/ubi-micro-dev
 
