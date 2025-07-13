@@ -131,7 +131,7 @@ set -x
 <remove xargs rpm -v -r "$rootfs" --erase --nodeps --allmatches
 rpm -r "$rootfs" -qa  >&2
 echo "================" >&2
-rpm -v -r "$rootfs"  -e nspr nss nss-softokn nss-softokn-freebl nss-sysinit nss-util  --nodeps >&2
+rpm -v -r "$rootfs"  -e nspr nss nss-softokn nss-softokn-freebl nss-sysinit nss-util  --nodeps || true >&2
 echo "================" >&2
 rpm -r "$rootfs" -qa >&2
 # { set +x; } 2>/dev/null
