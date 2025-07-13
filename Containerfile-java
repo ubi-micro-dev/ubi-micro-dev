@@ -11,7 +11,7 @@ RUN dnf --installroot /mnt/rootfs install \
         --releasever $UBI_VERSION \
         --setopt install_weak_deps=false --nodocs -y
 
-RUN <<'EOF'
+RUN <<EOF
 set -euo pipefail
 dnf --installroot /mnt/rootfs clean all
 groupadd -R /mnt/rootfs/ ubi-micro-dev -g 1001
