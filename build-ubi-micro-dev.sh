@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -x
+
 set -euo pipefail
 
 dnf --installroot /mnt/rootfs clean all
