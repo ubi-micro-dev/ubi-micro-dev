@@ -8,6 +8,7 @@ ARG JDK_PKG
 
 RUN dnf --installroot /mnt/rootfs install \
         $JDK_PKG coreutils-single glibc-langpack-en glibc-minimal-langpack \
+        redhat-release \
         --releasever $UBI_VERSION \
         --setopt install_weak_deps=false --nodocs -y
 
