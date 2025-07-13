@@ -134,6 +134,12 @@ echo "================" >&2
 rpm -v -r "$rootfs"  -e nspr nss nss-softokn nss-softokn-freebl nss-sysinit nss-util  --nodeps || true >&2
 echo "================" >&2
 rpm -r "$rootfs" -qa >&2
+echo "================" >&2
+rpm -v -r "$rootfs"  -e openssl-libs || true >&2
+echo "================" >&2
+rpm -r "$rootfs" -qa >&2
+echo "================" >&2
+rpm -v -r "$rootfs"  -e openssl-libs --nodeps || true >&2
 # { set +x; } 2>/dev/null
 
 echo "==> Packages erased ok!" >&2
