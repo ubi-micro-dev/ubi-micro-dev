@@ -37,7 +37,7 @@ RUN <<'EOF'
   else
       echo "==> Nothing to erase"
   fi
-  EOF
+EOF
 
 FROM scratch
 ENV LANG en_US.UTF-8
