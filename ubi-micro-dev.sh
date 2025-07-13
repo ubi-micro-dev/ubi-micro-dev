@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+echo "THIS IS THE NEW VERSION!!" >&2
+
 ###############################################################################
 # 1. Parse arguments
 ###############################################################################
@@ -27,7 +29,7 @@ done
 ###############################################################################
 # 2. Prepare working dirs
 ###############################################################################
-dir="/tmp/ubi-micro-dev"
+dir="/tmp/micro-ubi-dev"
 rootfs="$dir/rootfs"
 rm -rf "$dir"
 mkdir -p "$rootfs"
@@ -41,26 +43,27 @@ cat >> keep <<'EOF'
 bash
 EOF
 
+# keep used to include coreutils-single
+
 cat > disallow <<'EOF'
 alsa-lib
-chkconfig
 copy-jdk-configs
-coreutils
-cups-libs
-gawk
-info
-less
 lua
-ncurses-base
-ncurses-libs
-p11-kit
+cups-libs
+chkconfig
+info
+gawk
 platform-python
 platform-python-setuptools
 python3
 python3-libs
 python3-pip-wheel
 python3-setuptools-wheel
+p11-kit
+ncurses-base
+ncurses-libs
 sqlite-libs
+nspr nss nss-softokn nss-softokn-freebl nss-sysinit nss-util
 EOF
 
 sort -u keep -o keep
@@ -81,10 +84,12 @@ dnf install -y findutils diffutils   # tools the script itself needs
 
 # Enable modules inside the chroot before installing packages there
 for m in "${modules[@]}"; do
-  dnf -y --installroot "$rootfs" --releasever 9 module enable "$m"
+#  dnf -y --installroot "$rootfs" --releasever 9 module enable "$m"
+    dnf -y --installroot "$rootfs" module enable "$m"
 done
 
-<keep xargs dnf install -y --installroot "$rootfs" --releasever 9 \
+#<keep xargs dnf install -y --installroot "$rootfs" --releasever 9 \
+<keep xargs dnf install -y --installroot "$rootfs" \
       --setopt install_weak_deps=false --nodocs
 
 dnf --installroot "$rootfs" clean all
@@ -120,9 +125,20 @@ echo "==> $(wc -l < keep) packages to keep:" >&2
 cat keep
 echo >&2
 
+echo "================" >&2
+rpm -r "$rootfs" -qa >&2
+
 echo "==> Erasing packages" >&2
 set -x
 <remove xargs rpm -r "$rootfs" --erase --nodeps --allmatches
-{ set +x; } 2>/dev/null
+rpm -r "$rootfs" -qa  >&2
+<remove xargs rpm -r "$rootfs" --erase --nodeps --noscripts --allmatches
+echo "================"  >&2
+rpm -r "$rootfs" -qa  >&2
+echo "================" >&2
+rpm -r "$rootfs"  -e nss --nodeps >&2
+echo "================" >&2
+rpm -r "$rootfs" -qa >&2
+# { set +x; } 2>/dev/null
 
 echo "==> Packages erased ok!" >&2
