@@ -6,18 +6,21 @@ FROM registry.access.redhat.com/ubi${UBI_VERSION} AS ubi-micro-build
 ARG UBI_VERSION
 ARG JDK_PKG
 
-ADD build-ubi-micro-dev.sh .
-RUN UBI_VERSION=$UBI_VERSION ./build-ubi-micro-dev.sh
-
 RUN dnf --installroot /mnt/rootfs install \
         $JDK_PKG coreutils-single glibc-langpack-en glibc-minimal-langpack \
         --releasever $UBI_VERSION \
         --setopt install_weak_deps=false --nodocs -y
 
+ADD build-ubi-micro-dev.sh .
+RUN UBI_VERSION=$UBI_VERSION ./build-ubi-micro-dev.sh
+
 FROM scratch
 ENV LANG en_US.UTF-8
 
 LABEL org.opencontainers.image.source="https://github.com/ubi-micro-dev/ubi-micro-dev"
+LABEL com.redhat.license_terms="https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI"
+
+LABEL io.openshift.expose-services=""
 
 ADD ubi-micro-dev.sh /usr/bin
 COPY --from=ubi-micro-build /mnt/rootfs /
