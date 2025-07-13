@@ -20,7 +20,7 @@ ENV LANG en_US.UTF-8
 LABEL org.opencontainers.image.source="https://github.com/ubi-micro-dev/ubi-micro-dev"
 
 ADD ubi-micro-dev.sh /usr/bin
-COPY --from=ubi-micro-build /tmp/ubi-micro-dev/delete-list /
+COPY --from=ubi-micro-build /tmp/ubi-micro-dev/delete-script /
 COPY --from=ubi-micro-build /tmp/ubi-micro-dev/rootfs/ /
 
 RUN cat /delete-list | sh
