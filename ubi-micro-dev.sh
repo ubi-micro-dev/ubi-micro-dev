@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "THIS IS THE NEW VERSION!!" >&2
-
 ###############################################################################
 # 1. Parse arguments
 ###############################################################################
@@ -29,7 +27,7 @@ done
 ###############################################################################
 # 2. Prepare working dirs
 ###############################################################################
-dir="/tmp/micro-ubi-dev"
+dir="/tmp/ubi-micro-dev"
 rootfs="$dir/rootfs"
 rm -rf "$dir"
 mkdir -p "$rootfs"
@@ -130,13 +128,10 @@ rpm -r "$rootfs" -qa >&2
 
 echo "==> Erasing packages" >&2
 set -x
-<remove xargs rpm -r "$rootfs" --erase --nodeps --allmatches
-rpm -r "$rootfs" -qa  >&2
-<remove xargs rpm -r "$rootfs" --erase --nodeps --noscripts --allmatches
-echo "================"  >&2
+<remove xargs rpm -v -r "$rootfs" --erase --nodeps --allmatches
 rpm -r "$rootfs" -qa  >&2
 echo "================" >&2
-rpm -r "$rootfs"  -e nss --nodeps >&2
+rpm -v -r "$rootfs"  -e nspr nss nss-softokn nss-softokn-freebl nss-sysinit nss-util  --nodeps >&2
 echo "================" >&2
 rpm -r "$rootfs" -qa >&2
 # { set +x; } 2>/dev/null
