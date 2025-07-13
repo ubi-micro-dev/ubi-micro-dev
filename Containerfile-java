@@ -26,6 +26,7 @@ LABEL io.openshift.expose-services=""
 ADD ubi-micro-dev.sh /usr/bin
 COPY --from=ubi-micro-build /mnt/rootfs /
 COPY --from=ubi-micro-build /etc/yum.repos.d/* /etc/yum.repos.d/
+COPY --from=ubi-micro-build /usr/share/buildinfo /
 
 ENTRYPOINT java
 WORKDIR /home/ubi-micro-dev
