@@ -21,6 +21,11 @@ pkgs=( coreutils-single alsa-lib copy-jdk-configs lua cups-libs gawk \
 
 remove=()
 
+dnf install --installroot /mnt/rootfs \
+    redhat-release \
+    --releasever $UBI_VERSION --setopt install_weak_deps=false --nodocs --nogpgcheck -y
+rpm --root=/mnt/rootfs --import /mnt/rootfs/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+
 for p in "${pkgs[@]}"; do
   rpm --root /mnt/rootfs -q "$p" &>/dev/null && remove+=( "$p" ) ;
 done
