@@ -123,20 +123,20 @@ echo "==> $(wc -l < keep) packages to keep:" >&2
 cat keep
 echo >&2
 
-echo "================"
-rpm -r "$rootfs" -qa
+echo "================" >&2
+rpm -r "$rootfs" -qa >&2
 
 echo "==> Erasing packages" >&2
 set -x
 <remove xargs rpm -r "$rootfs" --erase --nodeps --allmatches
-rpm -r "$rootfs" -qa
+rpm -r "$rootfs" -qa  >&2
 <remove xargs rpm -r "$rootfs" --erase --nodeps --noscripts --allmatches
-echo "================"
-rpm -r "$rootfs" -qa
-echo "================"
-rpm -r "$rootfs"  -e nss --nodeps
-echo "================"
-rpm -r "$rootfs" -qa
-{ set +x; } 2>/dev/null
+echo "================"  >&2
+rpm -r "$rootfs" -qa  >&2
+echo "================" >&2
+rpm -r "$rootfs"  -e nss --nodeps >&2
+echo "================" >&2
+rpm -r "$rootfs" -qa >&2
+# { set +x; } 2>/dev/null
 
 echo "==> Packages erased ok!" >&2
