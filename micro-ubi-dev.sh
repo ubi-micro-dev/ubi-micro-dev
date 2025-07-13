@@ -87,7 +87,7 @@ for m in "${modules[@]}"; do
 done
 
 #<keep xargs dnf install -y --installroot "$rootfs" --releasever 9 \
-<keep xargs dnf install -y --installroot "$rootfs" \    
+<keep xargs dnf install -y --installroot "$rootfs" \
       --setopt install_weak_deps=false --nodocs
 
 dnf --installroot "$rootfs" clean all
@@ -122,6 +122,9 @@ cat remove
 echo "==> $(wc -l < keep) packages to keep:" >&2
 cat keep
 echo >&2
+
+echo "================"
+rpm -r "$rootfs" -qa
 
 echo "==> Erasing packages" >&2
 set -x
