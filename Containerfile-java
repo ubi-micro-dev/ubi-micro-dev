@@ -3,27 +3,51 @@ ARG JDK_VERSION=21
 ARG JDK_PKG=java-21-openjdk-headless
 
 FROM registry.access.redhat.com/ubi${UBI_VERSION} AS ubi-micro-build
+ARG UBI_VERSION
 ARG JDK_PKG
 
-ADD ubi-micro-dev.sh /usr/bin
-RUN ubi-micro-dev.sh $JDK_PKG glibc-langpack-en \
-    && groupadd -R /tmp/ubi-micro-dev/rootfs/ ubi-micro-dev -g 1001 \
-    && useradd -R /tmp/ubi-micro-dev/rootfs/ \
-               -u 1001 -g ubi-micro-dev -G ubi-micro-dev \
-               -m -d /home/ubi-micro-dev -s /sbin/nologin \
-               -c "ubi-micro-dev user" ubi-micro-dev \
-    && rpm -ql coreutils-single | xargs echo "rm -rf" > /tmp/ubi-micro-dev/delete-script
+RUN dnf --installroot /mnt/rootfs install \
+        $JDK_PKG coreutils-single glibc-langpack-en glibc-minimal-langpack \
+        --releasever $UBI_VERSION \
+        --setopt install_weak_deps=false --nodocs -y
 
-FROM registry.access.redhat.com/ubi${UBI_VERSION}-micro
+RUN <<'EOF'
+  set -euo pipefail
+  dnf --installroot /mnt/rootfs clean all
+  groupadd -R /mnt/rootfs/ ubi-micro-dev -g 1001
+  useradd -R /mnt/rootfs/ \
+          -u 1001 -g ubi-micro-dev -G ubi-micro-dev \
+          -m -d /home/ubi-micro-dev -s /sbin/nologin \
+          -c "ubi-micro-dev user" ubi-micro-dev
+  rm -rf /mnt/rootfs/var/cache/* /mnt/rootfs/var/log/dnf* /mnt/rootfs/var/log/yum.*
+  pkgs=( coreutils-single alsa-lib copy-jdk-configs lua cups-libs gawk \
+         python3 python3-libs python3-pip-wheel python3-setuptools-wheel \
+         platform-python-setuptools \
+         p11-kit ncurses-base sqlite-libs \
+         nspr nss nss-softokn nss-softokn-freebl nss-sysinit nss-util )
+
+  remove=()
+  for p in "${pkgs[@]}"; do
+      rpm --root /mnt/rootfs -q "$p" &>/dev/null && remove+=( "$p" )
+  done
+
+  if [ ${#remove[@]} -gt 0 ]; then
+      echo "==> Erasing: ${remove[*]}"
+      rpm --root /mnt/rootfs -e --nodeps --noscripts --allmatches "${remove[@]}"
+  else
+      echo "==> Nothing to erase"
+  fi
+EOF
+
+FROM scratch
 ENV LANG en_US.UTF-8
 
 LABEL org.opencontainers.image.source="https://github.com/ubi-micro-dev/ubi-micro-dev"
 
 ADD ubi-micro-dev.sh /usr/bin
-COPY --from=ubi-micro-build /tmp/ubi-micro-dev/delete-script /
-COPY --from=ubi-micro-build /tmp/ubi-micro-dev/rootfs/ /
+COPY --from=ubi-micro-build /mnt/rootfs /
+COPY --from=ubi-micro-build /etc/yum.repos.d/* /etc/yum.repos.d/
 
-RUN cat /delete-script | sh
+ENTRYPOINT java
 WORKDIR /home/ubi-micro-dev
-
-USER 1001
+USER 0
