@@ -26,13 +26,13 @@ RUN set -euo pipefail \
               nspr nss nss-softokn nss-softokn-freebl nss-sysinit nss-util ) \
     && remove=() \
     && for p in "${pkgs[@]}"; do \
-        rpm --root /mnt/rootfs -q "$p" &>/dev/null && remove+=( "$p" ) \
+        rpm --root /mnt/rootfs -q "$p" &>/dev/null && remove+=( "$p" ) ; \
        done \
     && if [ ${#remove[@]} -gt 0 ]; then \
-         echo "==> Erasing: ${remove[*]}" \
-         rpm --root /mnt/rootfs -e --nodeps --noscripts --allmatches "${remove[@]}" \
+         echo "==> Erasing: ${remove[*]}" ; \
+         rpm --root /mnt/rootfs -e --nodeps --noscripts --allmatches "${remove[@]}" ; \
        else \
-         echo "==> Nothing to erase" \
+         echo "==> Nothing to erase" ; \
        fi
 
 FROM scratch
