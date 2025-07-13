@@ -11,7 +11,8 @@ RUN ubi-micro-dev.sh $JDK_PKG glibc-langpack-en \
     && useradd -R /tmp/ubi-micro-dev/rootfs/ \
                -u 1001 -g ubi-micro-dev -G ubi-micro-dev \
                -m -d /home/ubi-micro-dev -s /sbin/nologin \
-               -c "ubi-micro-dev user" ubi-micro-dev
+               -c "ubi-micro-dev user" ubi-micro-dev \
+    && rpm -ql coreutils-single | xargs echo "rm -rf" > /tmp/ubi-micro-dev/delete-script
 
 FROM registry.access.redhat.com/ubi${UBI_VERSION}-micro
 ENV LANG en_US.UTF-8
@@ -19,8 +20,10 @@ ENV LANG en_US.UTF-8
 LABEL org.opencontainers.image.source="https://github.com/ubi-micro-dev/ubi-micro-dev"
 
 ADD ubi-micro-dev.sh /usr/bin
+COPY --from=ubi-micro-build /tmp/ubi-micro-dev/delete-list /
 COPY --from=ubi-micro-build /tmp/ubi-micro-dev/rootfs/ /
 
+RUN cat /delete-list | sh
 WORKDIR /home/ubi-micro-dev
 
 USER 1001
