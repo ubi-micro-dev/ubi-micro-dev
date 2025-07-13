@@ -23,7 +23,7 @@ ADD ubi-micro-dev.sh /usr/bin
 COPY --from=ubi-micro-build /tmp/ubi-micro-dev/delete-script /
 COPY --from=ubi-micro-build /tmp/ubi-micro-dev/rootfs/ /
 
-RUN cat /delete-list | sh
+RUN cat /delete-script | sh
 WORKDIR /home/ubi-micro-dev
 
 USER 1001
