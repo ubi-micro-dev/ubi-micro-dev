@@ -1,5 +1,5 @@
 # ubi-micro-dev
-> Pre-built micro Red Hat UBI images for modern application development
+> Pre-built micro container images for developers based on Red Hat UBI technology
 
 [✨ **Start Here: View the Container Collection and Image Reports** ✨](https://ubi-micro-dev.github.io/ubi-micro-dev/)
 
@@ -10,7 +10,7 @@ OCI-compliant container images based on Red Hat’s Universal Base Image
 (UBI) technology. These images are purpose-built to simplify secure,
 minimal application hosting.
 
-Red Hat’s official *UBI Micro* base images are extremely lightweight,
+Red Hat’s official *UBI Micro* base image is extremely lightweight,
 omitting the package manager and most supporting tools. While this
 minimalism is excellent for production security, it can make
 installing essential runtimes (such as Java or Node.js) unnecessarily
