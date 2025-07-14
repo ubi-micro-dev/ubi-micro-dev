@@ -727,6 +727,30 @@
         (markup:write-html-to-stream
          <page-template title="ubi-micro-dev" index="true">
          <br>
+         <h2>Available Images</h2>
+         <table class="table table-hover">
+         <thead class="thead-dark" >
+         <tr><th>Technology</th><th>Images</th></tr>
+         </thead>
+         <tbody>
+         <tr><td>Java</td><td><ul>
+         <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-openjdk-21--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-openjdk-21</a></li>
+         <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-openjdk-17--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-openjdk-17</a></li>
+         <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-openjdk-8-latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-openjdk-8</a></li>
+         <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-openjdk-21--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-openjdk-21</a></li>
+         <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-openjdk-17--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-openjdk-17</a></li>
+         <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-openjdk-8-latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-openjdk-8</a></li>
+         </ul></td></tr>
+         <tr><td>Node.js</td><td><ul>
+         <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-nodejs-22--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-nodejs-22</a></li>
+         <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-nodejs-18--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-nodejs-18</a></li>
+         <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-nodejs-16--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-nodejs-16</a></li>
+         <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-nodejs-22--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-nodejs-22</a></li>
+         <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-nodejs-20--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-nodejs-20</a></li>
+         <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-nodejs-18--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-nodejs-18</a></li>
+         <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-nodejs-16--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-nodejs-16</a></li>
+         </ul></td></tr></tbody></table>
+         <br>
          <h2>New CVEs from the last 90 days</h2>
          <div class="form-check filter-checkbox">
            <input class="form-check-input" type="checkbox" value="" id="toggle-filter">
@@ -777,30 +801,6 @@
          </tbody>
          </markup:merge-tag>
          </table>
-         <br>
-         <h2>Scanned image reports</h2>
-         <table class="table table-hover">
-         <thead class="thead-dark" >
-         <tr><th>Technology</th><th>Images</th></tr>
-         </thead>
-         <tbody>
-         <tr><td>Java</td><td><ul>
-         <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-openjdk-21--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-openjdk-21</a></li>
-         <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-openjdk-17--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-openjdk-17</a></li>
-         <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-openjdk-8-latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-openjdk-8</a></li>
-         <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-openjdk-21--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-openjdk-21</a></li>
-         <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-openjdk-17--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-openjdk-17</a></li>
-         <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-openjdk-8-latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-openjdk-8</a></li>
-         </ul></td></tr>
-         <tr><td>Node.js</td><td><ul>
-         <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-nodejs-22--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-nodejs-22</a></li>
-         <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-nodejs-18--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-nodejs-18</a></li>
-         <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-nodejs-16--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-nodejs-16</a></li>
-         <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-nodejs-22--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-nodejs-22</a></li>
-         <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-nodejs-20--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-nodejs-20</a></li>
-         <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-nodejs-18--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-nodejs-18</a></li>
-         <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-nodejs-16--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-nodejs-16</a></li>
-         </ul></td></tr></tbody></table>
          </page-template>
          stream))))
     (sb-ext:quit))
