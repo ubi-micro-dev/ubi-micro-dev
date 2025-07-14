@@ -30,8 +30,16 @@
 
     ;; --- Start of ubi-micro-dev opinions ----------------------------------
 
+    ((string= cve "CVE-2023-50495")
+     '("Ignoreable"
+       "This is a build-time error for ncurses (use of the <code>tic</code>
+binary at ncurses build-time), not a runtime error, and makes no sense in the context of an
+application runtime container.  See <a
+href=\"https://bugzilla.redhat.com/show_bug.cgi?id=2254244\">https://bugzilla.redhat.com/show_bug.cgi?id=2254244</a>
+for some colour."))
+
     ((and (string= cve "CVE-2022-27943")
-	  (eq 1 (length locations))
+          (eq 1 (length locations))
 	  (search "libgcc" (car locations)))
      '("False Positive"
        "This is a false positive.  libgcc does not contain the vulnerable code
@@ -39,14 +47,14 @@ found in libiberty/rust-demangle.c.  Scanners are flagging this
 package because it is built from the same source package as libiberty."))
 
     ((and (string= cve "CVE-2025-31344")
-	  (eq 1 (length locations))
-	  (search "headless" (car locations)))
+          (eq 1 (length locations))
+          (search "headless" (car locations)))
      '("False Positive"
        "This is a false positive.  This CVE only applies to OpenJDK's libawt
 library, which is not included in the \"headless\" package.  Scanners
 are flagging the headless package because it is built from the same
 source package as the one containing libawt."))
-    
+
     ((string= cve "CVE-2024-54534")
      '("False Positive"
        "This is a false positive.  This CVE only applies to OpenJDK's JavaFX
