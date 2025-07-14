@@ -7,10 +7,10 @@
 
 **ubi-micro-dev** is a curated collection of **distroless**,
 OCI-compliant container images based on Red Hat’s Universal Base Image
-(UBI). These images are purpose-built to simplify secure, minimal
-application hosting.
+(UBI) technology. These images are purpose-built to simplify secure,
+minimal application hosting.
 
-Red Hat’s official *micro UBI* base images are extremely lightweight,
+Red Hat’s official *UBI Micro* base images are extremely lightweight,
 omitting the package manager and most supporting tools. While this
 minimalism is excellent for production security, it can make
 installing essential runtimes (such as Java or Node.js) unnecessarily
@@ -24,7 +24,7 @@ process.
 ---
 
 ## ✅ Key Features
-- Based on trusted **Red Hat UBI** technology -- 100% supportable by Red Hat
+- Based entirely on trusted **Red Hat UBI** technology
 - **Distroless**: no package manager, fewer attack surfaces
 - Pre-installed **Java** and **Node.js** runtimes
 - Fully **OCI-compatible**
