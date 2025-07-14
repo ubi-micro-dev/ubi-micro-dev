@@ -12,15 +12,14 @@ RUN dnf --installroot /mnt/rootfs install \
         --releasever $UBI_VERSION \
         --setopt install_weak_deps=false --nodocs -y
 
-ADD build-ubi-micro-dev.sh .
-RUN UBI_VERSION=$UBI_VERSION ./build-ubi-micro-dev.sh
+ADD build-umd-image.sh .
+RUN UBI_VERSION=$UBI_VERSION ./build-umd-image.sh $JDK_PKG
 
 FROM scratch
 ENV LANG en_US.UTF-8
 
 LABEL org.opencontainers.image.source="https://github.com/ubi-micro-dev/ubi-micro-dev"
 LABEL com.redhat.license_terms="https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI"
-
 LABEL io.openshift.expose-services=""
 
 COPY --from=ubi-micro-build /usr/share/buildinfo /
