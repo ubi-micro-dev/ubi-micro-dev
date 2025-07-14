@@ -327,7 +327,7 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="https://ubi-micro-dev.github.io/ubi-micro-dev/"><img src="https://raw.githubusercontent.com/ubi-micro-dev/ubi-micro-dev/main/images/scandy-32x32.png" alt="" width="30" height="30"></a>
-            <a class="navbar-brand" href="https://ubi-micro-dev.github.com/ubi-micro-dev/">ubi-micro-dev</a>
+            <a class="navbar-brand" href="https://ubi-micro-dev.github.io/ubi-micro-dev/">ubi-micro-dev</a>
         </div>
     </nav>
     <main class="container" role="main">
