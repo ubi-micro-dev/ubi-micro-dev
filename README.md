@@ -24,7 +24,7 @@ process.
 ---
 
 ## ✅ Key Features
-- Based on trusted **Red Hat UBI Micro** technology
+- Based on trusted **Red Hat UBI** technology -- 100% supportable by Red Hat
 - **Distroless**: no package manager, fewer attack surfaces
 - Pre-installed **Java** and **Node.js** runtimes
 - Fully **OCI-compatible**
