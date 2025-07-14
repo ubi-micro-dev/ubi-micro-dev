@@ -46,19 +46,4 @@ You can pull the images directly and start building your containers without addi
 These images come pre-configured with non-root user `ubi-micro-dev`,
 and `WORKDIR` is set to `/home/ubi-micro-dev`.
 
-If you really must install additional RPMS, run a multi-stage build and use the `ubi-micro-dev.sh` script to install packages.
-
-```
-FROM ghcr.io/ubi-micro-dev/ubi9-micro-dev-openjdk-21 AS source-image
-FROM registry.access.redhat.com/ubi9 AS build-image
-
-COPY --from=source-image /usr/bin/ubi-micro-dev.sh /usr/bin
-
-# Install git (for example)
-RUN ubi-micro-dev.sh git-core
-
-FROM ghcr.io/ubi-micro-dev/ubi9-micro-dev-openjdk-21
-COPY --from=build-image /tmp/ubi-micro-dev/rootfs/ /
-```
-
 ---
