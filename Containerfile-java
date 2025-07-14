@@ -6,14 +6,8 @@ FROM registry.access.redhat.com/ubi${UBI_VERSION} AS ubi-micro-build
 ARG UBI_VERSION
 ARG JDK_PKG
 
-RUN dnf --installroot /mnt/rootfs install \
-        $JDK_PKG coreutils-single glibc-langpack-en glibc-minimal-langpack \
-        redhat-release \
-        --releasever $UBI_VERSION \
-        --setopt install_weak_deps=false --nodocs -y
-
 ADD build-umd-image.sh .
-RUN UBI_VERSION=$UBI_VERSION ./build-umd-image.sh $JDK_PKG
+RUN UBI_VERSION=$UBI_VERSION ./build-umd-image.sh $JDK_PKG glibc-langpack-en glibc-minimal-langpack
 
 FROM scratch
 ENV LANG en_US.UTF-8
@@ -26,6 +20,5 @@ COPY --from=ubi-micro-build /usr/share/buildinfo /
 COPY --from=ubi-micro-build /mnt/rootfs /
 COPY --from=ubi-micro-build /usr/share/buildinfo /
 
-ENTRYPOINT java
 WORKDIR /home/ubi-micro-dev
 USER 0

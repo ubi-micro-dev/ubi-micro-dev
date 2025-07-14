@@ -88,6 +88,8 @@ done
 printf '%s\n' "${packages[@]}" > keep
 cat >> keep <<'EOF'
 bash
+redhat-release
+ncurses-libs
 EOF
 
 # Prepare a list of package we will never allow in the container image.
@@ -95,13 +97,13 @@ cat > disallow <<'EOF'
 alsa-lib
 chkconfig
 copy-jdk-configs
+coreutils
 coreutils-single
 cups-libs
 gawk
 info
 lua
 ncurses-base
-ncurses-libs
 nspr
 nss
 nss-softokn
@@ -128,7 +130,8 @@ for m in "${modules[@]}"; do
   dnf -y --installroot "$rootfs" module enable "$m"
 done
 
-rpm --root="$rootfs" --import "$rootfs"/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
+mkdir -p "$rootfs"/etc
+# rpm --root="$rootfs" --import "$rootfs"/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
 
 # Install all of the `keep` packages, without weak dependencies or
 # documentation, and then clean up a little.
