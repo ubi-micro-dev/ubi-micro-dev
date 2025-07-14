@@ -40,10 +40,7 @@ These images are ideal for:
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Getting started
 You can pull the images directly and start building your containers without additional configuration.
-
-These images come pre-configured with non-root user `ubi-micro-dev`,
-and `WORKDIR` is set to `/home/ubi-micro-dev`.
 
 ---
