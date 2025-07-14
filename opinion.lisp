@@ -30,13 +30,10 @@
 
     ;; --- Start of ubi-micro-dev opinions ----------------------------------
 
-    ((string= cve "CVE-2023-50495")
-     '("Ignoreable"
+    ((or (string= cve "CVE-2023-50495") (string= cve "CVE-2022-29458"))
+     '("False Positive"
        "This is a build-time error for ncurses (use of the <code>tic</code>
-binary at ncurses build-time), not a runtime error, and makes no sense in the context of an
-application runtime container.  See <a
-href=\"https://bugzilla.redhat.com/show_bug.cgi?id=2254244\">https://bugzilla.redhat.com/show_bug.cgi?id=2254244</a>
-for some colour."))
+binary at ncurses build-time), not a runtime error, and makes no sense in the context of an application runtime container.  <code>tic</code> is not included in <code>ncurses-libs</code> and so this is a False Positive."))
 
     ((and (string= cve "CVE-2022-27943")
           (eq 1 (length locations))
