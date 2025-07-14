@@ -23,8 +23,11 @@ LABEL com.redhat.license_terms="https://www.redhat.com/en/about/red-hat-end-user
 
 LABEL io.openshift.expose-services=""
 
+COPY --from=ubi-micro-build /usr/share/buildinfo /
 ADD ubi-micro-dev.sh /usr/bin
+COPY --from=ubi-micro-build /usr/share/buildinfo /
 COPY --from=ubi-micro-build /mnt/rootfs /
+COPY --from=ubi-micro-build /usr/share/buildinfo /
 COPY --from=ubi-micro-build /etc/yum.repos.d/* /etc/yum.repos.d/
 COPY --from=ubi-micro-build /usr/share/buildinfo /
 
