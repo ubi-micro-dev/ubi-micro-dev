@@ -785,7 +785,6 @@
          </thead>
          <tbody>
          <tr><td>Java</td><td><ul>
-         <li><a href="ghcr.io--ubi-micro-dev--ubi10-micro-dev-openjdk-21--latest.html">ghcr.io/ubi-micro-dev/ubi10-micro-dev-openjdk-21</a></li>
          <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-openjdk-21--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-openjdk-21</a></li>
          <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-openjdk-17--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-openjdk-17</a></li>
          <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-openjdk--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-openjdk-8</a></li>
@@ -794,7 +793,6 @@
          <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-openjdk--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-openjdk-8</a></li>
          </ul></td></tr>
          <tr><td>Node.js</td><td><ul>
-         <li><a href="ghcr.io--ubi-micro-dev--ubi10-micro-dev-nodejs-22--latest.html">ghcr.io/ubi-micro-dev/ubi10-micro-dev-nodejs-22</a></li>
          <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-nodejs-22--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-nodejs-22</a></li>
          <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-nodejs-18--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-nodejs-18</a></li>
          <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-nodejs-16--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-nodejs-16</a></li>
