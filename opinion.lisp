@@ -30,6 +30,10 @@
 
     ;; --- Start of ubi-micro-dev opinions ----------------------------------
 
+    ((string= cve "CVE-2018-19217")
+     '("False Positive"
+       "This CVE is not reproducible in version 6.1 and MITRE has tagged it as \"DISPUTED\"."))
+
     ((or (string= cve "CVE-2023-50495") (string= cve "CVE-2022-29458"))
      '("False Positive"
        "This is a build-time error for ncurses (use of the <code>tic</code>
