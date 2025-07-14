@@ -43,4 +43,14 @@ These images are ideal for:
 ## 🚀 Getting started
 You can pull the images directly and start building your containers without additional configuration.
 
+For example:
+
+```
+FROM ghcr.io/ubi-micro-dev/ubi9-micro-dev-openjdk-21:latest
+
+ADD spring-petclinic-3.4.0-SNAPSHOT.jar .
+
+CMD java -jar spring-petclinic-3.4.0-SNAPSHOT.jar
+```
+
 ---
