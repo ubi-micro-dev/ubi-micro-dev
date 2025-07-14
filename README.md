@@ -53,4 +53,8 @@ ADD spring-petclinic-3.4.0-SNAPSHOT.jar .
 CMD java -jar spring-petclinic-3.4.0-SNAPSHOT.jar
 ```
 
+These images are rebuilt and scanned every 6 hours, and are only ever
+published with a `latest` tag.  For reproducibility, pull these images
+into your own registry and assign tags that are meaningful to you.
+
 ---
