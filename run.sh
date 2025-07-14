@@ -33,7 +33,7 @@ function trivy_scan {
     # Perform trivy scans
     IMG=$(echo ${1} | sed 's/\//\-\-/g' | sed 's/:/\-\-/g')
     mkdir -p trivy
-    retry_command trivy -f json -o trivy/${IMG}.json image ${1}
+    retry_command trivy -d -f json -o trivy/${IMG}.json image ${1}
 }
 
 function grype_scan {
