@@ -21,3 +21,5 @@ COPY --from=ubi-micro-build /usr/share/buildinfo /
 
 WORKDIR /home/ubi-micro-dev
 USER 0
+
+ENTRYPOINT java

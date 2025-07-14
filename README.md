@@ -50,7 +50,7 @@ FROM ghcr.io/ubi-micro-dev/ubi9-micro-dev-openjdk-21:latest
 
 ADD spring-petclinic-3.4.0-SNAPSHOT.jar .
 
-CMD java -jar spring-petclinic-3.4.0-SNAPSHOT.jar
+ENTRYPOINT java -jar spring-petclinic-3.4.0-SNAPSHOT.jar
 ```
 
 These images are rebuilt and scanned every 6 hours, and are only ever
