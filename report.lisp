@@ -216,7 +216,7 @@
                 ,(progn (let ((opinion (get-opinion (id (car vulns)) (collect-components vulns) (collect-locations vulns) *image-name*)))
                           (when opinion
                             <markup:merge-tag>
-                            <h3>Scandy Opinion: </h3>
+                            <h3>ubi-micro-dev Opinion: </h3>
                             ,(markup:unescaped (cadr opinion))
                             </markup:merge-tag>
                             )))
