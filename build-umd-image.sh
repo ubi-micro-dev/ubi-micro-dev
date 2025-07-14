@@ -1,4 +1,61 @@
 #!/usr/bin/env bash
+#
+# ─────────────────────────────────────────────────────────────────────────────
+#  WHY THIS SCRIPT EXISTS
+#  ----------------------
+
+#  Red Hat’s Universal Base Images (UBI) provide signed,
+#  redistributable RPMs, but the official UBI Micro image comes
+#  without DNF/YUM or any convenient way to add or remove packages.
+#  This script builds alternatives to the UBI Micro image by starting
+#  with a minimal set of packages and layering on language runtimes,
+#  or other package specified on the command line.  It specifically
+#  **excludes** `coreutils-single`, which is part of Red Hat's UBI
+#  Micro image.
+#
+#  This script builds such an image FROM "scratch":
+#
+#    • It creates a fresh root filesystem under `/mnt/rootfs`, populated
+#      exclusively by the RPMs you name on the command line (plus their true
+#      dependencies) and nothing more.
+#    • It guarantees that certain heavyweight or security-sensitive libraries
+#      (listed in `disallow`, e.g. `nss`, `python3`, `lua`) can never sneak in,
+#      even indirectly via dependencies.
+#    • It lets you enable individual UBI module streams (e.g. `nodejs:18`)
+#      during the build so that you get the right runtime ABI without pulling
+#      the entire development tool-chain into the final image.
+#    • It finishes by stripping docs, weak deps, cache files, and then creates
+#      a non-root user (UID/GID 1001) so the resulting container runs safely
+#      by default.
+#
+#  The outcome is a tiny, auditable, reproducible rootfs comprising only
+#  the RPMs you asked for.
+#
+#  WHAT THE SCRIPT DOES
+#  --------------------
+#  1.  Parses CLI arguments:
+#        – `--module[=<stream>]`  ➜ enable a DNF module stream on host & rootfs
+#        – `<package>`            ➜ add an RPM to the “keep” list
+#  2.  Seeds `keep` with those packages plus mandatory `bash`; seeds `disallow`
+#      with RPM names that must never appear.
+#  3.  Enables every requested module stream both on the build host (for
+#      dependency solving) and inside the target root.
+#  4.  Installs the current `keep` set into `/mnt/rootfs`, skipping weak deps
+#      and docs, then cleans all caches.
+#  5.  Iteratively calculates the *minimal* dependency closure of `keep`,
+#      subtracts anything on the `disallow` list, updates `keep`, and repeats
+#      until no new deps appear.
+#  6.  Computes `remove = all_installed – keep` and erases every package in
+#      that list with `--nodeps --allmatches`.
+#  7.  Adds group `ubi-micro-dev` (GID 1001) and user `ubi-micro-dev`
+#      (UID 1001, no-login shell) inside the rootfs.
+#
+#  Invoke this script in a `RUN` layer of your Containerfile/ Dockerfile; copy
+#  or mount `/mnt/rootfs` into a final scratch layer; and you have a bespoke
+#  micro-UBI runtime built entirely from signed Red Hat RPMs—but containing
+#  only what you truly need.
+# ─────────────────────────────────────────────────────────────────────────────
+
 set -euo pipefail
 
 # Install build-time tools
