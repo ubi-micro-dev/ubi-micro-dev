@@ -127,17 +127,16 @@ sort -u keep -o keep
 # dependency resolution, and the target root.
 for m in "${modules[@]}"; do
   dnf -y module enable "$m"
-  dnf -y --installroot "$rootfs" module enable "$m"
+  dnf -y --releasever=$UBI_VERSION --installroot "$rootfs" module enable "$m"
 done
 
 mkdir -p "$rootfs"/etc
-# rpm --root="$rootfs" --import "$rootfs"/etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
 
 # Install all of the `keep` packages, without weak dependencies or
 # documentation, and then clean up a little.
 cp -a /etc/yum.repos.d "$rootfs"/etc
-ls -l "$rootfs"
-<keep xargs dnf install -y --installroot "$rootfs" \
+
+<keep xargs dnf --releasever=$UBI_VERSION install -y --installroot "$rootfs" \
       --setopt install_weak_deps=false --nodocs
 dnf --installroot "$rootfs" clean all
 rm -rf "$rootfs"/var/cache/{bpf,dnf,ldconfig} \

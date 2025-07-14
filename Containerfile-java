@@ -16,7 +16,6 @@ LABEL org.opencontainers.image.source="https://github.com/ubi-micro-dev/ubi-micr
 LABEL com.redhat.license_terms="https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI"
 LABEL io.openshift.expose-services=""
 
-COPY --from=ubi-micro-build /usr/share/buildinfo /
 COPY --from=ubi-micro-build /mnt/rootfs /
 COPY --from=ubi-micro-build /usr/share/buildinfo /
 

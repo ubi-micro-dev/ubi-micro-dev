@@ -1,27 +1,24 @@
 ARG UBI_VERSION=9
-ARG NODE_VERSION=18
-ARG MODULE=nodejs-18
+ARG NODE_VERSION=22
+ARG MODULE=--module=nodejs:22
 
 FROM registry.access.redhat.com/ubi${UBI_VERSION} AS ubi-micro-build
-ARG NODE_VERSION
 ARG MODULE
+ARG UBI_VERSION
 
-ADD ubi-micro-dev.sh /usr/bin/
-RUN ubi-micro-dev.sh ${MODULE} nodejs npm glibc-langpack-en \
-    && groupadd -R /tmp/ubi-micro-dev/rootfs/ ubi-micro-dev -g 1001 \
-    && useradd -R /tmp/ubi-micro-dev/rootfs/ \
-               -u 1001 -g ubi-micro-dev -G ubi-micro-dev \
-               -m -d /home/ubi-micro-dev -s /sbin/nologin \
-               -c "ubi-micro-dev user" ubi-micro-dev
+ADD build-umd-image.sh .
+RUN UBI_VERSION=$UBI_VERSION ./build-umd-image.sh ${MODULE} nodejs npm glibc-langpack-en glibc-minimal-langpack
 
-FROM registry.access.redhat.com/ubi${UBI_VERSION}-micro
+FROM scratch
 ENV LANG en_US.UTF-8
 
 LABEL org.opencontainers.image.source="https://github.com/ubi-micro-dev/ubi-micro-dev"
+LABEL com.redhat.license_terms="https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI"
+LABEL io.openshift.expose-services=""
 
-ADD ubi-micro-dev.sh /usr/bin
-COPY --from=ubi-micro-build /tmp/ubi-micro-dev/rootfs/ /
+COPY --from=ubi-micro-build /mnt/rootfs /
+COPY --from=ubi-micro-build /usr/share/buildinfo /
 
+ENTRYPOINT node
 WORKDIR /home/ubi-micro-dev
-
-USER 1001
+USER 0
