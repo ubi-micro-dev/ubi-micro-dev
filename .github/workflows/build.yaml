@@ -184,6 +184,8 @@ jobs:
           mkdir _site
           cat images.list | ./run.sh
           cp index.html _site
+          cp -a js _site
+          cp -a css _site
 
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
