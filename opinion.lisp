@@ -29,6 +29,15 @@
   (cond
 
     ;; --- Start of ubi-micro-dev opinions ----------------------------------
+    ((and (string= "java-17-openjdk-headless-1:17.0.16.0.8-2.el9"
+                   (car locations))
+          (find cve '("CVE-2025-30749"
+                      "CVE-2025-50059"
+                      "CVE-2025-50106"
+                      "CVE-2025-30754")))
+     '("False Positive"
+       "Red Hat is reporting that this CVE was fixed in the version of OpenJDK
+17 installed in this image."))
 
     ((string= cve "CVE-2018-19217")
      '("False Positive"
