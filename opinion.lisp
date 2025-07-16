@@ -29,7 +29,7 @@
   (cond
 
     ;; --- Start of ubi-micro-dev opinions ----------------------------------
-    ((and (equal locations '("java-17-openjdk-headless-1:17.0.16.0.8-2.el9"))
+    ((and (equal components '("java-17-openjdk-headless"))
           (find cve '("CVE-2025-30749"
                       "CVE-2025-50059"
                       "CVE-2025-50106"
