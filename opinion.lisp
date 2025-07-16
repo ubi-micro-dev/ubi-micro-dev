@@ -29,11 +29,11 @@
   (cond
 
     ;; --- Start of ubi-micro-dev opinions ----------------------------------
-    ((and (equal components '("java-17-openjdk-headless"))
+    ((and (equal locations '("java-17-openjdk-headless-1:17.0.16.0.8-2.el9"))
           (find cve '("CVE-2025-30749"
                       "CVE-2025-50059"
                       "CVE-2025-50106"
-                      "CVE-2025-30754")))
+                      "CVE-2025-30754") :test #'string=))
      '("False Positive"
        "Red Hat is reporting that this CVE was fixed in the version of OpenJDK
 17 installed in this image."))
