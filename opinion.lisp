@@ -51,10 +51,10 @@ package because it is built from the same source package as libiberty."))
           (eq 1 (length locations))
           (search "headless" (car locations)))
      '("False Positive"
-       "This is a false positive.  This CVE only applies to OpenJDK's libawt
-library, which is not included in the \"headless\" package.  Scanners
-are flagging the headless package because it is built from the same
-source package as the one containing libawt."))
+       "This is a false positive.  The OpenJDK project source from which this
+package is built includes certain files copied from the vulnerable
+giflib library.  However, it does not include the source code file
+with the problem (gif2rgb.c) and therefore it is not vulnerable."))
 
     ((string= cve "CVE-2024-54534")
      '("False Positive"
