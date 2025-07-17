@@ -50,12 +50,13 @@
 binary at ncurses build-time), not a runtime error, and makes no sense in the context of an application runtime container.  <code>tic</code> is not included in <code>ncurses-libs</code> and so this is a False Positive."))
 
     ((and (string= cve "CVE-2022-27943")
-          (eq 1 (length locations))
-	  (search "libgcc" (car locations)))
+          (every (lambda (item) (member item '("libgcc" "libstdc++") :test #'string=))
+                 components))
      '("False Positive"
-       "This is a false positive.  <code>libgcc</code> does not contain the vulnerable code
-found in libiberty/rust-demangle.c.  Scanners are flagging this
-package because it is built from the same source package as libiberty."))
+       "This is a false positive.  Neither <code>libgcc</code> nor <code>libstdc++</code>
+contain the vulnerable code found in libiberty/rust-demangle.c.
+Scanners are flagging this package because it is built from the same
+source package as libiberty."))
 
     ((and (string= cve "CVE-2025-31344")
           (eq 1 (length locations))
