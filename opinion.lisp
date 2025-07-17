@@ -50,6 +50,9 @@
 binary at ncurses build-time), not a runtime error, and makes no sense in the context of an application runtime container.  <code>tic</code> is not included in <code>ncurses-libs</code> and so this is a False Positive."))
 
     ((and (string= cve "CVE-2022-27943")
+          (print components)
+          (print (every (lambda (item) (member item '("libgcc" "libstdc++") :test #'string=))
+                        components))
           (every (lambda (item) (member item '("libgcc" "libstdc++") :test #'string=))
                  components))
      '("False Positive"
