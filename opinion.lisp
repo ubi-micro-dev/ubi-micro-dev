@@ -55,7 +55,7 @@ binary at ncurses build-time), not a runtime error, and makes no sense in the co
      '("False Positive"
        "This is a false positive.  Neither <code>libgcc</code> nor <code>libstdc++</code>
 contain the vulnerable code found in libiberty/rust-demangle.c.
-Scanners are flagging this package because it is built from the same
+Scanners are flagging this package because they are built from the same
 source package as libiberty."))
 
     ((and (string= cve "CVE-2025-31344")
