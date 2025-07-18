@@ -32,4 +32,5 @@
   :components ((:file "report") (:file "opinion"))
   :depends-on (:cl-json :markup :cl-who :dexador
                :local-time :dbi :trivial-backtrace
+               :cl-ppcre
                :log4cl :iterate :cl-fad :3bmd))

@@ -518,9 +518,10 @@
            (loop for v in vulns
                  append (references v) into acc
                  finally (return (append refs acc))))
-         ;; Split entries that contain spaces into separate strings
+         ;; Split entries on any whitespace using cl-ppcre
          (expanded-refs
-           (loop for r in all-refs append (split-sequence:split-sequence #\Space r))))
+           (loop for r in all-refs
+                 append (cl-ppcre:split "\\s+" r))))
     (sort (remove-duplicates expanded-refs :test #'string-equal) 'reference<)))
 
 (defun collect-locations (vulns)
