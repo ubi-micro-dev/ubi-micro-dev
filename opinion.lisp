@@ -119,7 +119,7 @@ metadata associated with this CVE."))
 		   (not (uiop:string-prefix-p "pcre2-tools" s)))
 		 locations))
      '("False Positive"
-       "This is a false positive.  The vulnerability only exists in the <code>pcre2-tools</code> package, which is not installed in this container image."))
+       "This is a false positive.  As noted on Red Hat's CVE page, the vulnerability only exists in the <code>pcre2-tools</code> package, which is not installed in this container image."))
 
     ;; --- End of ubi-micro-dev opinions ----------------------------------
 
