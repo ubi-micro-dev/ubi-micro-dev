@@ -512,11 +512,16 @@
 (defun collect-references (id vulns)
   ;; Force the redhat CVE link because sometimes it's missing from the
   ;; metadata we pull.
-  (let ((refs (when (string= "CVE-" (subseq id 0 4))
-                (list (format nil "https://access.redhat.com/security/cve/~A" id)))))
-    (loop for v in vulns
-          do (setf refs (append refs (references v))))
-    (sort (remove-duplicates refs :test #'string-equal) 'reference<)))
+  (let* ((refs (when (string= "CVE-" (subseq id 0 4))
+                 (list (format nil "https://access.redhat.com/security/cve/~A" id))))
+         (all-refs
+           (loop for v in vulns
+                 append (references v) into acc
+                 finally (return (append refs acc))))
+         ;; Split entries that contain spaces into separate strings
+         (expanded-refs
+           (loop for r in all-refs append (split-sequence:split-sequence #\Space r))))
+    (sort (remove-duplicates expanded-refs :test #'string-equal) 'reference<)))
 
 (defun collect-locations (vulns)
   (let ((locations (loop for v in vulns
