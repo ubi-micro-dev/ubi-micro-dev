@@ -160,7 +160,7 @@ jobs:
       matrix:
         include:
           - { ubi: '8',  python: '3.12' }
-          - { ubi: '9',  python: '3.13' }
+          - { ubi: '9',  python: '3.12' }
 
     steps:
       - uses: actions/checkout@v4
