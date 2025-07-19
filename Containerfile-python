@@ -14,6 +14,7 @@ FROM scratch
 ARG PYTHON_VERSION
 
 ENV LANG en_US.UTF-8
+    PYTHON_VERSION=3.12
 
 LABEL org.opencontainers.image.source="https://github.com/ubi-micro-dev/ubi-micro-dev"
 LABEL com.redhat.license_terms="https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI"
@@ -22,6 +23,6 @@ LABEL io.openshift.expose-services=""
 COPY --from=ubi-micro-build /mnt/rootfs /
 COPY --from=ubi-micro-build /usr/share/buildinfo /
 
-ENTRYPOINT python${PYTHON_VERSION}
+ENTRYPOINT ["/usr/bin/python${PYTHON_VERSION}"]
 WORKDIR /home/ubi-micro-dev
 USER 1001
