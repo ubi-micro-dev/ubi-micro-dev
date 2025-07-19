@@ -29,6 +29,13 @@
   (cond
 
     ;; --- Start of ubi-micro-dev opinions ----------------------------------
+    ((string= cve "CVE-2025-1795")
+     '("False Positive"
+       "This vulnerability was fixed upstream in version 3.12.9, hence this
+image does not container this vulnerability.  Red Hat Product Security
+has been contacted about updating their CVE page for this
+vulnerability."))
+
     ((and (string= cve "CVE-2018-1000654")
           (every (lambda (item) (member item '("libtasn1") :test #'string=))
                  components))
