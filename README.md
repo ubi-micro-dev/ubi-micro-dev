@@ -13,8 +13,8 @@ minimal application hosting.
 Red Hat’s official *UBI Micro* base image is extremely lightweight,
 omitting the package manager and most supporting tools. While this
 minimalism is excellent for production security, it can make
-installing essential runtimes (such as Java or Node.js) unnecessarily
-complex.
+installing essential runtimes (such as Java, Node.js and Python)
+unnecessarily complex.
 
 **ubi-micro-dev** solves this by providing pre-configured,
 application-ready images that include popular runtimes and libraries
@@ -26,7 +26,7 @@ process.
 ## ✅ Key Features
 - Based entirely on trusted **Red Hat UBI** technology
 - **Distroless**: no package manager, fewer attack surfaces
-- Pre-installed **Java** and **Node.js** runtimes
+- Pre-installed **Java**, **Node.js** and **Python** runtimes
 - Fully **OCI-compatible**
 - Designed for **secure, minimal deployments**
 
@@ -34,7 +34,7 @@ process.
 
 ## 🎯 Who Is This For?
 These images are ideal for:
-- Java or Node.js developers deploying to Kubernetes
+- Java, Node.js and Python developers deploying to Kubernetes
 - Teams who want the smallest possible Red Hat–based images without the hassle of manual RPM installs
 - CI/CD pipelines requiring predictable, minimal environments
 
