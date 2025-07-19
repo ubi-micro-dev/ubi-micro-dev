@@ -29,6 +29,12 @@
   (cond
 
     ;; --- Start of ubi-micro-dev opinions ----------------------------------
+    ((string= cve "CVE-2025-50182")
+     '("False Positive"
+       "This CVE only applies when code embedded within
+<code>pip</code> (<code>urllib</code>) is executed within
+a python-on-node.js runtime (Pyodide / emscripten), which is not included in this container image."))
+
     ((and (find (car components)
                 '("java-17-openjdk-headless"
                   "java-21-openjdk-headless")
@@ -78,7 +84,7 @@ for details."))
 
     ((string= cve "CVE-2024-21094")
      '("False Positive"
-      "This is a false positive.  This vulnerability has been fixed in the upstream OpenJDK project,
+       "This is a false positive.  This vulnerability has been fixed in the upstream OpenJDK project,
 and Red Hat ships newer versions of OpenJDK that already include this
 fix.  The Red Hat product security team has been asked to modify the
 metadata associated with this CVE."))
@@ -115,9 +121,9 @@ metadata associated with this CVE."))
        "This CVE has been rejected upstream, because this flaw does not exist and was erroneously tested. This issue has been marked as a false-positive - <a href=\"https://sourceforge.net/p/libpng/bugs/300/\">https://sourceforge.net/p/libpng/bugs/300/</a>. Consider a global exception policy for this CVE."))
 
     ((and (string= cve "CVE-2022-41409")
-	  (every (lambda (s)
-		   (not (uiop:string-prefix-p "pcre2-tools" s)))
-		 locations))
+          (every (lambda (s)
+                   (not (uiop:string-prefix-p "pcre2-tools" s)))
+                 locations))
      '("False Positive"
        "This is a false positive.  As noted on Red Hat's CVE page, the vulnerability only exists in the <code>pcre2-tools</code> package, which is not installed in this container image."))
 
