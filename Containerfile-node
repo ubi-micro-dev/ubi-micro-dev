@@ -21,4 +21,4 @@ COPY --from=ubi-micro-build /usr/share/buildinfo /
 
 ENTRYPOINT node
 WORKDIR /home/ubi-micro-dev
-USER 0
+USER 1001

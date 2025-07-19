@@ -11,6 +11,8 @@ ADD build-umd-image.sh .
 RUN UBI_VERSION=$UBI_VERSION ./build-umd-image.sh ${MODULE} python${PYTHON_VERSION} python${PYTHON_VERSION}-pip python${PYTHON_VERSION}-pip-wheel glibc-langpack-en glibc-minimal-langpack
 
 FROM scratch
+ARG PYTHON_VERSION
+
 ENV LANG en_US.UTF-8
 
 LABEL org.opencontainers.image.source="https://github.com/ubi-micro-dev/ubi-micro-dev"
@@ -22,4 +24,4 @@ COPY --from=ubi-micro-build /usr/share/buildinfo /
 
 ENTRYPOINT python${PYTHON_VERSION}
 WORKDIR /home/ubi-micro-dev
-USER 0
+USER 1001

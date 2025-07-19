@@ -20,6 +20,6 @@ COPY --from=ubi-micro-build /mnt/rootfs /
 COPY --from=ubi-micro-build /usr/share/buildinfo /
 
 WORKDIR /home/ubi-micro-dev
-USER 0
+USER 1001
 
 ENTRYPOINT java
