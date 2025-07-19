@@ -1,0 +1,24 @@
+ARG UBI_VERSION=9
+ARG PYTHON_VERSION=3.13
+ARG MODULE=
+
+FROM registry.access.redhat.com/ubi${UBI_VERSION} AS ubi-micro-build
+ARG MODULE
+ARG UBI_VERSION
+
+ADD build-umd-image.sh .
+RUN UBI_VERSION=$UBI_VERSION ./build-umd-image.sh ${MODULE} python${PYTHON_VERSION} python${PYTHON_VERSION}-pip python${PYTHON_VERSION}-pip-wheel glibc-langpack-en glibc-minimal-langpack
+
+FROM scratch
+ENV LANG en_US.UTF-8
+
+LABEL org.opencontainers.image.source="https://github.com/ubi-micro-dev/ubi-micro-dev"
+LABEL com.redhat.license_terms="https://www.redhat.com/en/about/red-hat-end-user-license-agreements#UBI"
+LABEL io.openshift.expose-services=""
+
+COPY --from=ubi-micro-build /mnt/rootfs /
+COPY --from=ubi-micro-build /usr/share/buildinfo /
+
+ENTRYPOINT python${PYTHON_VERSION}
+WORKDIR /home/ubi-micro-dev
+USER 0

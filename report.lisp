@@ -758,6 +758,10 @@
          <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-nodejs-20--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-nodejs-20</a></li>
          <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-nodejs-18--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-nodejs-18</a></li>
          <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-nodejs-16--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-nodejs-16</a></li>
+         </ul></td></tr>
+         <tr><td>Python</td><td><ul>
+         <li><a href="ghcr.io--ubi-micro-dev--ubi9-micro-dev-python-3.13--latest.html">ghcr.io/ubi-micro-dev/ubi9-micro-dev-python-3.13</a></li>
+         <li><a href="ghcr.io--ubi-micro-dev--ubi8-micro-dev-python-3.12--latest.html">ghcr.io/ubi-micro-dev/ubi8-micro-dev-python-3.12</a></li>
          </ul></td></tr></tbody></table>
          <br>
          <h2>New CVEs from the last 90 days</h2>

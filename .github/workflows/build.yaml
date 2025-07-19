@@ -148,9 +148,67 @@ jobs:
           name: img-${{ matrix.ubi || 'ubi' }}-${{ matrix.jdk || matrix.node }}
           path: image.txt
 
+  build-python:
+
+    name: UBI${{ matrix.ubi }} / Python ${{ matrix.python }}
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { ubi: '8',  python: '3.12' }
+          - { ubi: '9',  python: '3.13' }
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Podman login to GHCR
+        if: github.event_name != 'pull_request'
+        uses: redhat-actions/podman-login@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build & push image
+        env:
+          UBI_VER:  ${{ matrix.ubi }}
+          PYTHON_VER: ${{ matrix.python }}
+          OWNER:    ${{ github.repository }}
+          SHOULD_PUSH: ${{ github.event_name != 'pull_request' }}
+        run: |
+          set -euo pipefail
+
+          IMAGE=ghcr.io/ubi-micro-dev/ubi${UBI_VER}-micro-dev-python-${PYTHON_VER}:latest
+          echo "🏗  Building $IMAGE"
+
+          podman build \
+            --build-arg UBI_VERSION=$UBI_VER \
+            --build-arg PYTHON_VERSION=$PYTHON_VER \
+            --build-arg MODULE=${{ matrix.module }} \
+            -f Containerfile-python \
+            -t $IMAGE .
+
+          if [ "$SHOULD_PUSH" = "true" ]; then
+            echo "📤  Pushing $IMAGE"
+            podman push $IMAGE
+          else
+            echo "🧪  PR build -- image not pushed"
+          fi
+          echo "$IMAGE" > image.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          # unique name per leg so nothing overwrites
+          name: img-${{ matrix.ubi || 'ubi' }}-${{ matrix.jdk || matrix.python }}
+          path: image.txt
+
   scan-images:
     name: Scan All Images
-    needs: [build-java, build-node]
+    needs: [build-java, build-node, build-python]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
