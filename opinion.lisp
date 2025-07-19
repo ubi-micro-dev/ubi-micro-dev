@@ -29,6 +29,12 @@
   (cond
 
     ;; --- Start of ubi-micro-dev opinions ----------------------------------
+    ((and (string= cve "CVE-2018-1000654")
+          (every (lambda (item) (member item '("libtasn1") :test #'string=))
+                 components))
+     '("False Positive"
+       "As documented on Red Hat's CVE page, this vulnerability only exists in the <code>libtasn1-tools</code> package, not <code>libtasn1</code>.  Scanners are flagging this package because it is built from the same source package as <code>libtasn1-tools</code>."))
+
     ((string= cve "CVE-2025-50182")
      '("False Positive"
        "This CVE only applies when code embedded within
