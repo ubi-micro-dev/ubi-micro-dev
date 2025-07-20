@@ -8,7 +8,7 @@ ARG UBI_VERSION
 ARG MODULE
 
 ADD build-umd-image.sh .
-RUN UBI_VERSION=$UBI_VERSION ./build-umd-image.sh ${MODULE} python${PYTHON_VERSION} python${PYTHON_VERSION}-pip python${PYTHON_VERSION}-pip-wheel glibc-langpack-en glibc-minimal-langpack
+RUN UBI_VERSION=$UBI_VERSION ./build-umd-image.sh ${MODULE} python${PYTHON_VERSION} glibc-langpack-en glibc-minimal-langpack
 
 FROM scratch
 ARG PYTHON_VERSION
