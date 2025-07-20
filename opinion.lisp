@@ -29,6 +29,20 @@
   (cond
 
     ;; --- Start of ubi-micro-dev opinions ----------------------------------
+    ((and (every (lambda (item) (member item '("ncurses-libs") :test #'string=))
+                 components)
+          (find cve '("CVE-2023-50495"
+                      "CVE-2021-39537"
+                      "CVE-2920-19190"
+                      "CVE-2020-19189"
+                      "CVE-2020-19188"
+                      "CVE-2020-19187"
+                      "CVE-2020-19186"
+                      "CVE-2020-19185"
+                      "CVE-2018-19211")))
+     '("False Positive"
+       "This vulnerability only exists in tools found in the <code>ncurses</code> package, and not the <code>ncurses-libs</code> package.  This container image does not include <code>ncurses</code>, hence this a false positive."))
+
     ((string= cve "CVE-2025-1795")
      '("False Positive"
        "This vulnerability was fixed upstream in version 3.12.9, hence this
