@@ -41,7 +41,7 @@
                       "CVE-2020-19185"
                       "CVE-2018-19211") :test #'string=))
      '("False Positive"
-       "This vulnerability only exists in tools found in the <code>ncurses</code> package, and not the <code>ncurses-libs</code> package.  This container image does not include <code>ncurses</code>, hence this a false positive."))
+       "This vulnerability only exists in tools found in the <code>ncurses</code> package, and not the <code>ncurses-libs</code> package.  This container image does not include <code>ncurses</code>, hence this is a false positive."))
 
     ((string= cve "CVE-2025-1795")
      '("False Positive"
