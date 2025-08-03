@@ -19,7 +19,6 @@ LABEL io.openshift.expose-services=""
 COPY --from=ubi-micro-build /mnt/rootfs /
 COPY --from=ubi-micro-build /usr/share/buildinfo /
 
+ENTRYPOINT java
 WORKDIR /home/ubi-micro-dev
 USER 1001
-
-ENTRYPOINT java
