@@ -23,6 +23,6 @@ LABEL io.openshift.expose-services=""
 COPY --from=ubi-micro-build /mnt/rootfs /
 COPY --from=ubi-micro-build /usr/share/buildinfo /
 
-ENTRYPOINT ["/usr/bin/python${PYTHON_VERSION}"]
+ENTRYPOINT /usr/bin/python${PYTHON_VERSION}
 WORKDIR /home/ubi-micro-dev
 USER 1001
