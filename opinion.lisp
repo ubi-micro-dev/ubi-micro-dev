@@ -29,6 +29,14 @@
   (cond
 
     ;; --- Start of ubi-micro-dev opinions ----------------------------------
+    ((and (string= cve "CVE-2025-32990")
+          (every (lambda (item) (member item '("gnutls") :test #'string=))
+                 components))
+     '("False Positive"
+       "This vulnerability only exists within the <code>certtool</code> binary
+found int the <code>gnutls-utils</code> package, and not <code>gnutls</code>.
+Red Hat Product Security has been asked to update their CVE page with this clarification."))
+
     ((and (every (lambda (item) (member item '("ncurses-libs") :test #'string=))
                  components)
           (find cve '("CVE-2023-50495"
