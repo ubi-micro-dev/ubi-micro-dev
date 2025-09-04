@@ -30,8 +30,8 @@ jobs:
         jdk: [8, 17, 21]
         exclude:
           - { ubi: 10, jdk: 8  }   # UBI 10 has no Java 8
-          - { ubi: 10, jdk: 17 }   # UBI 10 has no Java 17
-
+          - { ubi: 10, jdk: 17 }   # UBI 10 has no Java 17'
+          
     steps:
       - uses: actions/checkout@v4
 
@@ -240,7 +240,7 @@ jobs:
           cat images.list
           echo ${{ github.token }} | oras login ghcr.io -u ${{ github.actor }} --password-stdin
           mkdir _site
-          cat images.list | ./run.sh
+          cat images.list | ./run-python.sh
           cp index.html _site
           cp -a js _site
           cp -a css _site

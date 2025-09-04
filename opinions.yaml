@@ -1,0 +1,282 @@
+# opinions.yaml
+# Security vulnerability opinions for ubi-micro-dev
+#
+# SPDX-License-Identifier: MIT
+# Copyright (C) 2024, 2025  Anthony Green <green@moxielogic.com>
+
+opinions:
+  - cve: CVE-2025-32990
+    components: [gnutls]
+    status: "False Positive"
+    description: |
+      This vulnerability only exists within the <code>certtool</code> binary
+      found int the <code>gnutls-utils</code> package, and not <code>gnutls</code>.
+      Red Hat Product Security has been asked to update their CVE page with this clarification.
+
+  # Multiple ncurses CVEs with same issue
+  - cves: [CVE-2023-50495, CVE-2021-39537, CVE-2020-19190, CVE-2020-19189, 
+           CVE-2020-19188, CVE-2020-19187, CVE-2020-19186, CVE-2020-19185, 
+           CVE-2018-19211]
+    components: [ncurses-libs]
+    status: "False Positive"
+    description: |
+      This vulnerability only exists in tools found in the <code>ncurses</code> package, and not the <code>ncurses-libs</code> package.  
+      This container image does not include <code>ncurses</code>, hence this is a false positive.
+
+  - cve: CVE-2025-1795
+    status: "False Positive"
+    description: |
+      This vulnerability was fixed upstream in version 3.12.9, hence this
+      image does not container this vulnerability.  Red Hat Product Security
+      has been contacted about updating their CVE page for this
+      vulnerability.
+
+  - cve: CVE-2018-1000654
+    components: [libtasn1]
+    status: "False Positive"
+    description: |
+      As documented on Red Hat's CVE page, this vulnerability only exists in the <code>libtasn1-tools</code> package, 
+      not <code>libtasn1</code>.  Scanners are flagging this package because it is built from the same source package 
+      as <code>libtasn1-tools</code>.
+
+  - cve: CVE-2025-50182
+    status: "False Positive"
+    description: |
+      This CVE only applies when code embedded within
+      <code>pip</code> (<code>urllib</code>) is executed within
+      a python-on-node.js runtime (Pyodide / emscripten), which is not included in this container image.
+
+  # OpenJDK CVEs fixed in Red Hat versions
+  - cves: [CVE-2025-30749, CVE-2025-50059, CVE-2025-50106, CVE-2025-30754]
+    any_components: [java-17-openjdk-headless, java-21-openjdk-headless]
+    status: "False Positive"
+    description: |
+      Red Hat is reporting that this CVE was fixed in the version of OpenJDK installed in this image.
+
+  - cve: CVE-2018-19217
+    status: "False Positive"
+    description: |
+      This CVE is not reproducible in version 6.1 and MITRE has tagged it as "DISPUTED".
+
+  # ncurses build-time errors
+  - cves: [CVE-2023-50495, CVE-2022-29458]
+    status: "False Positive"
+    description: |
+      This is a build-time error for ncurses (use of the <code>tic</code>
+      binary at ncurses build-time), not a runtime error, and makes no sense in the context of an application runtime container.  
+      <code>tic</code> is not included in <code>ncurses-libs</code> and so this is a False Positive.
+
+  - cve: CVE-2022-27943
+    all_components: [libgcc, libstdc++]
+    status: "False Positive"
+    description: |
+      This is a false positive.  Neither <code>libgcc</code> nor <code>libstdc++</code>
+      contain the vulnerable code found in libiberty/rust-demangle.c.
+      Scanners are flagging these packages because they are built from the same
+      source package as libiberty.
+
+  - cve: CVE-2025-31344
+    locations_pattern: "contains:headless"
+    status: "False Positive"
+    description: |
+      This is a false positive.  The OpenJDK project source from which this
+      package is built includes certain files copied from the vulnerable
+      giflib library.  However, it does not include the source code file
+      with the problem (gif2rgb.c) and therefore it is not vulnerable.
+
+  - cve: CVE-2024-54534
+    status: "False Positive"
+    description: |
+      This is a false positive.  This CVE only applies to OpenJDK's JavaFX
+      component, which is not installed in this image.  Red Hat does not
+      ship this component, and their product security team has been asked to
+      modify the metadata associated with this CVE.  See <a
+      href="https://access.redhat.com/solutions/3299701">https://access.redhat.com/solutions/3299701</a>
+      for details.
+
+  - cve: CVE-2024-21094
+    status: "False Positive"
+    description: |
+      This is a false positive.  This vulnerability has been fixed in the upstream OpenJDK project,
+      and Red Hat ships newer versions of OpenJDK that already include this
+      fix.  The Red Hat product security team has been asked to modify the
+      metadata associated with this CVE.
+
+  # Multiple OpenJDK CVEs already fixed upstream
+  - cves: [CVE-2024-21147, CVE-2024-21217, CVE-2024-21068, CVE-2024-21011,
+           CVE-2024-21235, CVE-2024-21138, CVE-2024-21208, CVE-2024-21145,
+           CVE-2024-21131, CVE-2024-21140, CVE-2024-21012, CVE-2024-21210,
+           CVE-2025-21502]
+    status: "False Positive"
+    description: |
+      This is a false positive.  This vulnerability has been fixed in the upstream OpenJDK project,
+      and Red Hat ships newer versions of OpenJDK that already include this
+      fix.  The Red Hat product security team has been asked to modify the
+      metadata associated with this CVE.
+
+  - cve: CVE-2023-45918
+    status: "Ignorable"
+    description: |
+      This is a junk CVE that is not a security issue and was withdrawn by its CNA.  
+      Consider a global exception policy for this CVE.  The Red Hat product security team has been asked to modify 
+      the metadata associated with this CVE.
+
+  # Duplicate entry removed - CVE-2022-3857 appears twice
+
+  - cve: CVE-2022-41409
+    locations_exclude: "startswith:pcre2-tools"
+    status: "False Positive"
+    description: |
+      This is a false positive.  As noted on Red Hat's CVE page, the vulnerability only exists in the 
+      <code>pcre2-tools</code> package, which is not installed in this container image.
+
+  - cve: CVE-2005-2541
+    status: "Ignorable"
+    description: |
+      The <code>tar</code> program is behaving as documented. There are no plans to change this.
+
+  - cve: CVE-2023-2004
+    status: "Ignorable"
+    description: |
+      This is a junk CVE that is not a security issue and was withdrawn by its CNA.  
+      Consider a global exception policy for this CVE.
+
+  # Junk CVEs rejected by upstream
+  - cves: [CVE-2023-2222, CVE-2019-1010022, CVE-2022-3554, CVE-2022-3555]
+    status: "Ignorable"
+    description: |
+      This is a junk CVE rejected by upstream.  Consider a global exception policy for this CVE.
+
+  - cve: CVE-2021-32256
+    status: "Ignorable"
+    description: |
+      This is a junk CVE.  The upstream binutils project rejects this bug as a security issue, in accordance with 
+      <a href="https://sourceware.org/git/?p=binutils-gdb.git;a=blob_plain;f=binutils/SECURITY.txt;h=f16b0c9d7099150e0f116e9e681c424eea3915fe;hb=HEAD">their security policy</a>.
+
+# Component-specific removable packages opinions
+  - components: [mod_http2]
+    status: "Removable"
+    description: |
+      You can remove this from your application container if you aren't serving http2 content with <code>httpd</code>.  
+      Consider removing this package like so:
+      <pre>
+      RUN rpm -e mod_http2
+      </pre>
+
+  # httpd packages (two different sets that appear in different contexts)
+  - any_components: [httpd]
+    all_components: [httpd, httpd-core, httpd-devel, httpd-filesystem, httpd-tools, mod_ldap, mod_lua, mod_session, mod_ssl]
+    status: "Removable"
+    description: |
+      A number of UBI images, including the Python UBI images, include <code>httpd</code> and related packages.  
+      These packages may not be required by your application, even when running web services (eg. via Flask).  
+      Consider removing these packages like so:
+      <pre>
+      RUN rpm -e httpd httpd-core httpd-devel httpd-filesystem httpd-tools mod_ldap mod_lua mod_session mod_ssl mod_auth_gssapi mod_http2
+      </pre>
+
+  - any_components: [httpd]
+    all_components: [httpd, httpd-devel, httpd-filesystem, httpd-tools, mod_http2, mod_ldap, mod_session, mod_ssl]
+    status: "Removable"
+    description: |
+      A number of UBI images, including the Python UBI images, include <code>httpd</code> and related packages.  
+      These packages may not be required by your application, even when running web services (eg. via Flask).  
+      Consider removing these packages like so:
+      <pre>
+      RUN rpm -e httpd httpd-core httpd-devel httpd-filesystem httpd-tools mod_ldap mod_lua mod_session mod_ssl mod_auth_gssapi mod_http2
+      </pre>
+
+  - components: [emacs-filesystem]
+    status: "Ignorable"
+    description: |
+      This vulnerability was identified in the <code>emacs</code> project
+      source code.  Red Hat builds multiple packages from the
+      <code>emacs</code> project source code, some of which do not contain
+      the specific code that triggered this CVE.  However, Red Hat's policy
+      is to taint every binary RPM built from the vulnerable source package
+      with the same vulnerability.  In this specific case,
+      <code>emacs-filesystem</code> only contains empty directories, and no
+      software at all.  It is only installed as a dependency for other
+      packages that install
+      emacs lisp extensions, even when emacs itself is not installed.  Consider a global exception for this vulnerability when
+      <code>emacs</code> is not installed in your container image.
+
+  - components: [kernel-headers]
+    status: "Ignorable"
+    description: |
+      This vulnerability exists in the Linux <code>kernel</code>, but Red Hat's policy is to taint
+      every subpackage built from the vulnerable source package with the
+      same vulnerability.  In this case, however,
+      <code>kernel-headers</code> only contains C header files needed to
+      build software that interfaces with the kernel.  Consider a
+      global exception for this vulnerability.
+
+  - components: [less]
+    status: "Removable"
+    description: |
+      The <code>less</code> package is often only dragged into a container image as a dependency of <code>git-core</code>.  
+      If this is the case for your image, consider removing <code>less</code> like so:
+      <pre>
+      RUN rpm -e --nodeps less
+      </pre>
+      When <code>less</code> is present, <code>git</code> will use <code>less</code> to page the
+      output of logs to a terminal for interactive use; something that is
+      not typically required in containerized applications.
+      When <code>less</code> is not present, <code>git</code> will just cat log output instead of paging it.
+
+  - components: [openssh, openssh-clients]
+    status: "Removable"
+    description: |
+      The <code>openssh</code> and <code>openssh-clients</code> are often only dragged
+      into container images as dependencies of <code>git-core</code>.  You
+      can safely remove these packages from your container image if this is
+      the case and you are not using ssh-based authentication with
+      <code>git</code> (for instance, you may be using token-based
+      authentication).  Remove these packages like so:
+      <pre>
+      RUN rpm -e --nodeps openssh openssh-clients
+      </pre>
+
+# Examples of complex pattern matching from original Lisp code:
+
+  # CVE with specific location pattern and image match
+  - cve: CVE-2024-6345
+    locations_pattern: "contains:/opt/app-root"
+    image: "registry.redhat.io/ubi8/python-39"
+    status: "False Positive"
+    description: |
+      This is a false positive. This container image contains a fixed
+      version of python-setuptools. The scanner is unable to detect that
+      files in <code>/opt/app-root</code> originated from Red Hat's fixed packages.
+
+  # Multiple locations with exact matches
+  - cve: CVE-2024-5971
+    locations:
+      - "/opt/eap/bin/client/jboss-client.jar"
+      - "/opt/jboss/container/wildfly/s2i/galleon/galleon-m2-repository/io/undertow/undertow-core/2.2.33.SP1-redhat-00001/undertow-core-2.2.33.SP1-redhat-00001.jar"
+    status: "False Positive"
+    description: |
+      This is a false positive. This CVE was fixed in the EAP 4.7.18 security advisory update.
+
+  # Location exclusion pattern
+  - cve: CVE-2024-49569
+    locations_pattern: "contains:/usr/bin/oc"
+    locations_exclude: "contains:vulnerable-component"
+    status: "False Positive"
+    description: |
+      The scanner is detecting vulnerable code in <code>/usr/bin/oc</code>,
+      but <code>oc</code> does not include the vulnerable parts of that project.
+
+  # CVE with SSH vulnerability and removable components advice
+  - cve: CVE-2024-6409
+    all_components: [openssh, openssh-clients]
+    status: "Ignorable & Removable"
+    description: |
+      This vulnerability lies in <code>sshd</code> (openssh-server), which is not installed.
+      Consider a global exception when <code>openssh-server</code> is not installed.
+      <br>
+      Alternatively, you may consider removing the <code>openssh</code> and
+      <code>openssh-clients</code> packages if not needed:
+      <pre>
+      RUN rpm -e --nodeps openssh openssh-clients
+      </pre>
