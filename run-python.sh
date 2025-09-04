@@ -3,6 +3,9 @@
 set -e
 set -x
 
+# Install Python dependencies
+pip install -r requirements.txt
+
 WORKDIR=$(mktemp -d)
 
 function cleanup {
