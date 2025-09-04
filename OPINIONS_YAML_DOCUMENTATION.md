@@ -30,8 +30,9 @@ opinions:
 
 ### Component Matching
 
-- **`components`**: Simple list - ALL components must be present in the vulnerability
-- **`all_components`**: Explicit AND logic - ALL listed components must be present
+- **`components`**: Subset match - ALL vulnerability components must be from this set
+- **`components_exact`**: Exact match - vulnerability components must be exactly this list (order-independent)
+- **`all_components`**: Explicit AND logic - ALL listed components must be present in the vulnerability
 - **`any_components`**: OR logic - at least ONE component must match
 - **`components_exclude`**: Components that must NOT be present
 
@@ -218,6 +219,8 @@ When converting from the Lisp cond statements:
 |-------------|-----------------|
 | `(string= cve "CVE-XXX")` | `cve: CVE-XXX` |
 | `(find cve '("CVE-1" "CVE-2"))` | `cves: [CVE-1, CVE-2]` |
+| `(every (lambda (x) (member x '(...)))` | `components: [...]` |
+| `(equal components '(...))` | `components_exact: [...]` |
 | `(every ... components)` | `all_components: [...]` |
 | `(find ... components)` | `any_components: [...]` |
 | `(search "text" location)` | `locations_pattern: "contains:text"` |

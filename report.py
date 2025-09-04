@@ -419,8 +419,15 @@ def get_opinion(cve, components, locations, image):
         
         # Check component conditions
         if 'components' in rule:
-            # Simple backward compatibility: all components must be present
-            if not all(comp in components for comp in rule['components']):
+            # Default behavior: all vulnerability components must be from rule's set
+            # This matches Lisp: (every (lambda (x) (member x rule-components)) vuln-components)
+            if not all(comp in rule['components'] for comp in components):
+                continue
+        
+        if 'components_exact' in rule:
+            # Exact match required - lists must be identical
+            # This matches Lisp: (equal components '(...))
+            if set(components) != set(rule['components_exact']):
                 continue
         
         if 'all_components' in rule:
