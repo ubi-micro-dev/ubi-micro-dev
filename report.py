@@ -137,7 +137,12 @@ class TrivyVulnerability(Vulnerability):
         if not self.published_date:
             pub_date = json_data.get('PublishedDate')
             if pub_date:
-                self.published_date = date_parser.parse(pub_date)
+                parsed_date = date_parser.parse(pub_date)
+                # Ensure datetime is timezone-naive
+                if parsed_date.tzinfo is not None:
+                    self.published_date = parsed_date.replace(tzinfo=None)
+                else:
+                    self.published_date = parsed_date
         
         if not self.description:
             self.description = json_data.get('Description')
@@ -165,7 +170,12 @@ class RedHatVulnerability(Vulnerability):
         
         pub_date = json_data.get('public_date')
         if pub_date:
-            self.published_date = date_parser.parse(pub_date)
+            parsed_date = date_parser.parse(pub_date)
+            # Ensure datetime is timezone-naive
+            if parsed_date.tzinfo is not None:
+                self.published_date = parsed_date.replace(tzinfo=None)
+            else:
+                self.published_date = parsed_date
         
         bugzilla = json_data.get('bugzilla', {})
         self.title = bugzilla.get('description')
@@ -200,7 +210,12 @@ def grok_ghsa(vuln):
                 
                 pt = ghjson.get('published')
                 if pt:
-                    vuln.published_date = date_parser.parse(pt)
+                    parsed_date = date_parser.parse(pt)
+                    # Ensure datetime is timezone-naive
+                    if parsed_date.tzinfo is not None:
+                        vuln.published_date = parsed_date.replace(tzinfo=None)
+                    else:
+                        vuln.published_date = parsed_date
                 
                 reference_list = ghjson.get('references', [])
                 for reference in reference_list:
@@ -813,7 +828,11 @@ def main():
         age = "?"
         for v in vulns:
             if v.published_date:
-                age_days = (now - v.published_date).days
+                # Convert published_date to naive datetime if it has timezone info
+                pub_date = v.published_date
+                if pub_date.tzinfo is not None:
+                    pub_date = pub_date.replace(tzinfo=None)
+                age_days = (now - pub_date).days
                 age = str(age_days)
                 
                 # Store in database
