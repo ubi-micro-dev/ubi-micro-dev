@@ -2,23 +2,26 @@
 
 ## Overview
 
-The `opinions.yaml` file contains security vulnerability opinions for the ubi-micro-dev project. These opinions help classify vulnerabilities as false positives, ignorable issues, or removable components, providing context and guidance for security assessments.
+The `opinions.yaml` file contains security vulnerability opinions for
+the ubi-micro-dev project. These opinions help classify
+vulnerabilities as false positives, ignorable issues, or removable
+components, providing context and guidance for security assessments.
 
 ## File Structure
 
 ```yaml
 opinions:
-  - cve: <string>           # Single CVE identifier
-    cves: [<list>]          # Multiple CVE identifiers (OR logic)
-    components: [<list>]    # Simple component list (ALL must match)
-    all_components: [<list>] # Explicit: ALL components must be present
-    any_components: [<list>] # Explicit: ANY component can match
-    locations: [<list>]     # Exact location matches
+  - cve: <string>               # Single CVE identifier
+    cves: [<list>]              # Multiple CVE identifiers (OR logic)
+    components: [<list>]        # Simple component list (ALL must match)
+    all_components: [<list>]    # Explicit: ALL components must be present
+    any_components: [<list>]    # Explicit: ANY component can match
+    locations: [<list>]         # Exact location matches
     locations_pattern: <string> # Pattern matching for locations
     locations_exclude: <string> # Exclusion pattern for locations
-    image: <string>         # Specific container image
-    status: <string>        # Opinion status
-    description: <string>   # HTML description
+    image: <string>             # Specific container image
+    status: <string>            # Opinion status
+    description: <string>       # HTML description
 ```
 
 ## Field Descriptions
@@ -200,28 +203,13 @@ import yaml
 
 with open('opinions.yaml', 'r') as f:
     data = yaml.safe_load(f)
-    
+
 for rule in data['opinions']:
     # Must have either cve or cves
     if 'cve' not in rule and 'cves' not in rule and 'components' not in rule:
         print(f"Rule missing CVE or component matcher: {rule}")
-    
+
     # Must have status and description
     if 'status' not in rule or 'description' not in rule:
         print(f"Rule missing status or description: {rule}")
 ```
-
-## Migration from Lisp
-
-When converting from the Lisp cond statements:
-
-| Lisp Pattern | YAML Equivalent |
-|-------------|-----------------|
-| `(string= cve "CVE-XXX")` | `cve: CVE-XXX` |
-| `(find cve '("CVE-1" "CVE-2"))` | `cves: [CVE-1, CVE-2]` |
-| `(every (lambda (x) (member x '(...)))` | `components: [...]` |
-| `(equal components '(...))` | `components_exact: [...]` |
-| `(every ... components)` | `all_components: [...]` |
-| `(find ... components)` | `any_components: [...]` |
-| `(search "text" location)` | `locations_pattern: "contains:text"` |
-| `(not (search ...))` | `locations_exclude: "contains:..."` |
