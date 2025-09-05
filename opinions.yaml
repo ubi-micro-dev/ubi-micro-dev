@@ -121,7 +121,12 @@ opinions:
       Consider a global exception policy for this CVE.  The Red Hat product security team has been asked to modify
       the metadata associated with this CVE.
 
-  # Duplicate entry removed - CVE-2022-3857 appears twice
+  - cve: CVE-2022-3857
+    status: "Ignorable"
+    description: |
+      This CVE has been rejected upstream, because this flaw does not exist and was erroneously tested. 
+      This issue has been marked as a false-positive - <a href="https://sourceforge.net/p/libpng/bugs/300/">https://sourceforge.net/p/libpng/bugs/300/</a>. 
+      Consider a global exception policy for this CVE.
 
   - cve: CVE-2022-41409
     locations_exclude: "startswith:pcre2-tools"
