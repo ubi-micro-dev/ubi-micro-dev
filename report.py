@@ -270,9 +270,14 @@ def vuln_sort_key(v1, v2):
     if not trivy1 or not trivy2:
         return -1 if trivy2 else 1
     
-    # Compare by severity
+    # Compare by severity - items WITH severity come before items WITHOUT severity
     if not trivy1.severity or not trivy2.severity:
-        return -1 if trivy2.severity else 1
+        if trivy1.severity and not trivy2.severity:
+            return -1  # v1 has severity, v2 doesn't - v1 comes first
+        elif not trivy1.severity and trivy2.severity:
+            return 1   # v1 doesn't have severity, v2 does - v2 comes first
+        else:
+            return 0   # both have no severity - keep current order
     
     if trivy1.severity != trivy2.severity:
         idx1 = SEVERITY_ORDER.index(trivy1.severity) if trivy1.severity in SEVERITY_ORDER else 999
@@ -705,7 +710,7 @@ def generate_page_template(content, title="ubi-micro-dev", index="false"):
                 "paging": false,
                 "info": true,
                 "searching": true,
-                "order": [[1, 'asc']],
+                "order": {'[]' if index != "true" else '[[1,"asc"]]'},
                 "columnDefs": [
                     {{ "type": "severity", "targets": [{3 if index != "true" else 3}, {4 if index != "true" else ''}, {5 if index != "true" else ''}] }},
                     {{ "type": "age", "targets": [1] }}
