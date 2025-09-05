@@ -36,6 +36,7 @@ from datetime import datetime
 from pathlib import Path
 import hashlib
 import traceback
+import functools
 import requests
 from dateutil import parser as date_parser
 import markdown
@@ -853,8 +854,8 @@ def main():
     
     logging.info(f"SORTING VULNS: {len(vuln_table)} unique vulnerabilities")
     
-    # Sort vulnerabilities
-    ordered_vulns = sorted(vuln_table.values(), key=lambda x: (vuln_sort_key(x, []), x[0].id))
+    # Sort vulnerabilities using comparison function
+    ordered_vulns = sorted(vuln_table.values(), key=functools.cmp_to_key(vuln_sort_key))
     
     # Generate report
     now = datetime.now()
