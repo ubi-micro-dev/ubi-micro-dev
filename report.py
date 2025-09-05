@@ -397,6 +397,8 @@ def check_pattern(items, pattern_type, pattern):
 
 def get_opinion(cve, components, locations, image):
     """Load opinions from YAML and find matching opinion."""
+    if cve == "CVE-2022-27943":
+        logging.info(f"DEBUG: Looking for opinion: cve={cve}, components={components}, locations={locations}, image={image}")
     try:
         with open('opinions.yaml', 'r') as f:
             opinions_data = yaml.safe_load(f)
@@ -422,7 +424,12 @@ def get_opinion(cve, components, locations, image):
             # Default behavior: all vulnerability components must be from rule's set
             # This matches Lisp: (every (lambda (x) (member x rule-components)) vuln-components)
             if not all(comp in rule['components'] for comp in components):
+                if cve == "CVE-2022-27943":
+                    logging.info(f"DEBUG: Rule {rule.get('cve', 'no-cve')} components check failed: vuln_components={components}, rule_components={rule['components']}")
                 continue
+            else:
+                if cve == "CVE-2022-27943":
+                    logging.info(f"DEBUG: Rule {rule.get('cve', 'no-cve')} components check passed: vuln_components={components}, rule_components={rule['components']}")
         
         if 'components_exact' in rule:
             # Exact match required - lists must be identical
@@ -471,6 +478,8 @@ def get_opinion(cve, components, locations, image):
                 continue
         
         # All conditions passed, return the opinion
+        if cve == "CVE-2022-27943":
+            logging.info(f"DEBUG: Found matching opinion for {cve}: {rule.get('status')}")
         return (rule.get('status'), rule.get('description'))
     
     return None
