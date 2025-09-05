@@ -705,7 +705,7 @@ def generate_page_template(content, title="ubi-micro-dev", index="false"):
                 "paging": false,
                 "info": true,
                 "searching": true,
-                "order": {'[]' if index != "true" else '[[1,"asc"]]'},
+                "order": [[1, 'asc']],
                 "columnDefs": [
                     {{ "type": "severity", "targets": [{3 if index != "true" else 3}, {4 if index != "true" else ''}, {5 if index != "true" else ''}] }},
                     {{ "type": "age", "targets": [1] }}
