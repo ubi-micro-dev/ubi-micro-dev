@@ -267,38 +267,60 @@ def vuln_sort_key(v1, v2):
     trivy1 = next((v for v in v1 if isinstance(v, TrivyVulnerability)), None)
     trivy2 = next((v for v in v2 if isinstance(v, TrivyVulnerability)), None)
     
+    # Debug logging
+    id1 = v1[0].id if v1 else "no-id"
+    id2 = v2[0].id if v2 else "no-id"
+    sev1 = trivy1.severity if trivy1 else None
+    sev2 = trivy2.severity if trivy2 else None
+    
     if not trivy1 or not trivy2:
-        return -1 if trivy2 else 1
+        result = -1 if trivy2 else 1
+        logging.info(f"SORT DEBUG: {id1}(trivy={bool(trivy1)}) vs {id2}(trivy={bool(trivy2)}) -> {result}")
+        return result
     
     # Compare by severity - items WITH severity come before items WITHOUT severity
     if not trivy1.severity or not trivy2.severity:
         if trivy1.severity and not trivy2.severity:
-            return -1  # v1 has severity, v2 doesn't - v1 comes first
+            result = -1  # v1 has severity, v2 doesn't - v1 comes first
+            logging.info(f"SORT DEBUG: {id1}(sev={sev1}) vs {id2}(sev={sev2}) -> {result} (v1 has sev)")
+            return result
         elif not trivy1.severity and trivy2.severity:
-            return 1   # v1 doesn't have severity, v2 does - v2 comes first
+            result = 1   # v1 doesn't have severity, v2 does - v2 comes first
+            logging.info(f"SORT DEBUG: {id1}(sev={sev1}) vs {id2}(sev={sev2}) -> {result} (v2 has sev)")
+            return result
         else:
-            return 0   # both have no severity - keep current order
+            result = 0   # both have no severity - keep current order
+            logging.info(f"SORT DEBUG: {id1}(sev={sev1}) vs {id2}(sev={sev2}) -> {result} (both no sev)")
+            return result
     
     if trivy1.severity != trivy2.severity:
         idx1 = SEVERITY_ORDER.index(trivy1.severity) if trivy1.severity in SEVERITY_ORDER else 999
         idx2 = SEVERITY_ORDER.index(trivy2.severity) if trivy2.severity in SEVERITY_ORDER else 999
-        return idx1 - idx2
+        result = idx1 - idx2
+        logging.info(f"SORT DEBUG: {id1}(sev={sev1},idx={idx1}) vs {id2}(sev={sev2},idx={idx2}) -> {result} (diff sev)")
+        return result
     
     # Compare by ID
     id1, id2 = trivy1.id, trivy2.id
     if id1[:8] != id2[:8]:
-        return -1 if id1 < id2 else 1
+        result = -1 if id1 < id2 else 1
+        logging.info(f"SORT DEBUG: {id1} vs {id2} -> {result} (diff id prefix)")
+        return result
     
     # Compare by CVE number
     if '-' in id1 and '-' in id2:
         try:
             n1 = int(id1.split('-')[-1])
             n2 = int(id2.split('-')[-1])
-            return n1 - n2
+            result = n1 - n2
+            logging.info(f"SORT DEBUG: {id1}(n={n1}) vs {id2}(n={n2}) -> {result} (cve num)")
+            return result
         except:
             pass
     
-    return -1 if id1 < id2 else 1
+    result = -1 if id1 < id2 else 1
+    logging.info(f"SORT DEBUG: {id1} vs {id2} -> {result} (final string)")
+    return result
 
 def reference_sort(r1, r2):
     """Order references by preference."""
