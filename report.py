@@ -275,7 +275,13 @@ def vuln_sort_key(v1, v2):
     sev2 = trivy2.severity if trivy2 else None
     
     if not trivy1 or not trivy2:
-        result = -1 if trivy2 else 1
+        # Items with Trivy data should come before items without
+        if trivy1 and not trivy2:
+            result = -1  # v1 has trivy, v2 doesn't - v1 comes first
+        elif not trivy1 and trivy2:
+            result = 1   # v1 doesn't have trivy, v2 does - v2 comes first
+        else:
+            result = 0   # neither has trivy - keep current order
         logging.info(f"SORT DEBUG: {id1}(trivy={bool(trivy1)}) vs {id2}(trivy={bool(trivy2)}) -> {result}")
         return result
     
@@ -297,7 +303,7 @@ def vuln_sort_key(v1, v2):
     if trivy1.severity != trivy2.severity:
         idx1 = SEVERITY_ORDER.index(trivy1.severity) if trivy1.severity in SEVERITY_ORDER else 999
         idx2 = SEVERITY_ORDER.index(trivy2.severity) if trivy2.severity in SEVERITY_ORDER else 999
-        result = idx1 - idx2
+        result = idx2 - idx1  # Reversed: higher severity (lower index) comes first
         logging.info(f"SORT DEBUG: {id1}(sev={sev1},idx={idx1}) vs {id2}(sev={sev2},idx={idx2}) -> {result} (diff sev)")
         return result
     
