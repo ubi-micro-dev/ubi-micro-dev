@@ -9,9 +9,7 @@ opinions:
     components: [gnutls]
     status: "False Positive"
     description: |
-      This vulnerability only exists within the <code>certtool</code> binary
-      found int the <code>gnutls-utils</code> package, and not <code>gnutls</code>.
-      Red Hat Product Security has been asked to update their CVE page with this clarification.
+      As noted on the Red Hat's CVE page, this vulnerability only exists within the <code>certtool</code> binary found int the <code>gnutls-utils</code> package, and is not found in the <code>gnutls</code> package.
 
   # Multiple ncurses CVEs with same issue
   - cves: [CVE-2023-50495, CVE-2021-39537, CVE-2020-19190, CVE-2020-19189,
@@ -124,8 +122,8 @@ opinions:
   - cve: CVE-2022-3857
     status: "Ignorable"
     description: |
-      This CVE has been rejected upstream, because this flaw does not exist and was erroneously tested. 
-      This issue has been marked as a false-positive - <a href="https://sourceforge.net/p/libpng/bugs/300/">https://sourceforge.net/p/libpng/bugs/300/</a>. 
+      This CVE has been rejected upstream, because this flaw does not exist and was erroneously tested.
+      This issue has been marked as a false-positive - <a href="https://sourceforge.net/p/libpng/bugs/300/">https://sourceforge.net/p/libpng/bugs/300/</a>.
       Consider a global exception policy for this CVE.
 
   - cve: CVE-2022-41409
