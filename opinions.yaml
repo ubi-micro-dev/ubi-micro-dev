@@ -82,6 +82,17 @@ opinions:
       giflib library.  However, it does not include the source code file
       with the problem (gif2rgb.c) and therefore it is not vulnerable.
 
+  - cve: [CVE-2025-64720, CVE-2025-65018, CVE-2025-66293, CVE-2025-64505, CVE-2025-64506]
+    locations_pattern: "contains:headless"
+    status: "False Positive"
+    description: |
+      This is a false positive.  The vulnerable code from `libpng`
+      only exists in `libsplashscreen.so`, which is not part of any
+      `java-*-openjdk-headless` package.  The vulnerable library is
+      distributed in `java-*-openjdk`, which is not installed in this
+      container image. The Red Hat product security team has been
+      asked to make this annotation on their CVE pages.
+
   - cve: CVE-2024-54534
     status: "False Positive"
     description: |
