@@ -82,7 +82,7 @@ opinions:
       giflib library.  However, it does not include the source code file
       with the problem (gif2rgb.c) and therefore it is not vulnerable.
 
-  - cve: [CVE-2025-64720, CVE-2025-65018, CVE-2025-66293, CVE-2025-64505, CVE-2025-64506]
+  - cves: [CVE-2025-64720, CVE-2025-65018, CVE-2025-66293, CVE-2025-64505, CVE-2025-64506]
     locations_pattern: "contains:headless"
     status: "False Positive"
     description: |
