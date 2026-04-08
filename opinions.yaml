@@ -11,6 +11,26 @@ opinions:
     description: |
       As noted on the Red Hat's CVE page, this vulnerability only exists within the <code>certtool</code> binary found int the <code>gnutls-utils</code> package, and is not found in the <code>gnutls</code> package.
 
+  - cve: CVE-2026-4046
+    status: "False Positive"
+    description: |
+      This is a false positive.  This vulnerability is in glibc's
+      <code>iconv()</code> function when processing IBM1390 or IBM1399
+      character sets, which are provided by the
+      <code>glibc-gconv-extra</code> package.  This package is not
+      installed in this container image.
+
+  - cves: [CVE-2026-4437, CVE-2026-4438]
+    status: "False Positive"
+    description: |
+      This is a false positive.  These vulnerabilities are in glibc's
+      <code>gethostbyaddr</code> and <code>gethostbyaddr_r</code>
+      functions when glibc's DNS backend is configured in
+      <code>nsswitch.conf</code>.  These container images do not include
+      NSS packages (they are explicitly blocked during the build) and
+      do not configure <code>nsswitch.conf</code> with glibc's DNS
+      backend, so the vulnerable code path cannot be reached.
+
   # Multiple ncurses CVEs with same issue
   - cves: [CVE-2023-50495, CVE-2021-39537, CVE-2020-19190, CVE-2020-19189,
            CVE-2020-19188, CVE-2020-19187, CVE-2020-19186, CVE-2020-19185,
