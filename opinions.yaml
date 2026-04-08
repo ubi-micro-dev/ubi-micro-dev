@@ -73,14 +73,17 @@ opinions:
       Scanners are flagging these packages because they are built from the same
       source package as libiberty.
 
-  - cve: CVE-2025-31344
+  - cves: [CVE-2025-31344, CVE-2026-26740]
     locations_pattern: "contains:headless"
     status: "False Positive"
     description: |
-      This is a false positive.  The OpenJDK project source from which this
-      package is built includes certain files copied from the vulnerable
-      giflib library.  However, it does not include the source code file
-      with the problem (gif2rgb.c) and therefore it is not vulnerable.
+      This is a false positive.  OpenJDK bundles a subset of giflib
+      under <code>libsplashscreen</code>, which only includes the GIF
+      decoding library (<code>dgif_lib.c</code>).  The vulnerable encoding
+      file (<code>egif_lib.c</code>) and tools (<code>gif2rgb.c</code>) are
+      not included in OpenJDK's source tree.  Furthermore,
+      <code>libsplashscreen</code> is not part of any
+      <code>java-*-openjdk-headless</code> package.
 
   - cves: [CVE-2025-64720, CVE-2025-65018, CVE-2025-66293, CVE-2025-64505, CVE-2025-64506]
     locations_pattern: "contains:headless"
