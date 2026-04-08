@@ -11,6 +11,20 @@ opinions:
     description: |
       As noted on the Red Hat's CVE page, this vulnerability only exists within the <code>certtool</code> binary found int the <code>gnutls-utils</code> package, and is not found in the <code>gnutls</code> package.
 
+  - cve: CVE-2026-2100
+    components: [p11-kit-trust]
+    status: "False Positive"
+    description: |
+      This is a false positive.  The vulnerability is in p11-kit's RPC
+      client code (<code>rpc-message.c</code>), which is used when
+      communicating with remote PKCS#11 tokens via
+      <code>C_DeriveKey</code> with IBM kyber or IBM btc derive
+      mechanisms.  The <code>p11-kit-trust</code> subpackage only
+      provides a local trust anchor module for reading system
+      certificate stores and does not include the RPC client code.
+      Scanners are flagging this package because it is built from the
+      same source package as <code>p11-kit</code>.
+
   - cve: CVE-2026-4046
     status: "False Positive"
     description: |
