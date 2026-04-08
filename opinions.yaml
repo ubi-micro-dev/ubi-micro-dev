@@ -95,9 +95,8 @@ opinions:
     status: "False Positive"
     description: |
       This vulnerability was fixed upstream in version 3.12.9, hence this
-      image does not container this vulnerability.  Red Hat Product Security
-      has been contacted about updating their CVE page for this
-      vulnerability.
+      image does not contain this vulnerability.  Red Hat has marked
+      python3.12 on RHEL 9 as "Not affected".
 
   - cve: CVE-2018-1000654
     components: [libtasn1]
@@ -163,8 +162,9 @@ opinions:
       only exists in `libsplashscreen.so`, which is not part of any
       `java-*-openjdk-headless` package.  The vulnerable library is
       distributed in `java-*-openjdk`, which is not installed in this
-      container image. The Red Hat product security team has been
-      asked to make this annotation on their CVE pages.
+      container image. Red Hat has confirmed this, noting that
+      "java-*-openjdk-headless packages do not contain
+      libsplashscreen.so, hence are not affected."
 
   - cves: [CVE-2026-25646, CVE-2025-28164, CVE-2026-22695, CVE-2026-22801,
            CVE-2026-33416, CVE-2026-33636]
@@ -206,8 +206,8 @@ opinions:
     description: |
       This is a false positive.  This CVE only applies to OpenJDK's JavaFX
       component, which is not installed in this image.  Red Hat does not
-      ship this component, and their product security team has been asked to
-      modify the metadata associated with this CVE.  See <a
+      ship this component and has removed OpenJDK from this CVE's
+      affected package list.  See <a
       href="https://access.redhat.com/solutions/3299701">https://access.redhat.com/solutions/3299701</a>
       for details.
 
@@ -216,8 +216,8 @@ opinions:
     description: |
       This is a false positive.  This vulnerability has been fixed in the upstream OpenJDK project,
       and Red Hat ships newer versions of OpenJDK that already include this
-      fix.  The Red Hat product security team has been asked to modify the
-      metadata associated with this CVE.
+      fix.  Red Hat has released errata (RHSA-2024:1815 through
+      RHSA-2024:1828) with patched versions for RHEL.
 
   # Multiple OpenJDK CVEs already fixed upstream
   - cves: [CVE-2024-21147, CVE-2024-21217, CVE-2024-21068, CVE-2024-21011,
@@ -228,15 +228,14 @@ opinions:
     description: |
       This is a false positive.  This vulnerability has been fixed in the upstream OpenJDK project,
       and Red Hat ships newer versions of OpenJDK that already include this
-      fix.  The Red Hat product security team has been asked to modify the
-      metadata associated with this CVE.
+      fix.  Red Hat has released errata with patched versions for RHEL.
 
   - cve: CVE-2023-45918
     status: "Ignorable"
     description: |
       This is a junk CVE that is not a security issue and was withdrawn by its CNA.
-      Consider a global exception policy for this CVE.  The Red Hat product security team has been asked to modify
-      the metadata associated with this CVE.
+      Consider a global exception policy for this CVE.  Red Hat has
+      removed this CVE from their security data.
 
   - cve: CVE-2022-3857
     status: "Ignorable"
