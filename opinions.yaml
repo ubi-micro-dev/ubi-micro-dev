@@ -93,6 +93,41 @@ opinions:
       container image. The Red Hat product security team has been
       asked to make this annotation on their CVE pages.
 
+  - cves: [CVE-2026-25646, CVE-2025-28164, CVE-2026-22695, CVE-2026-22801,
+           CVE-2026-33416, CVE-2026-33636]
+    locations_pattern: "contains:headless"
+    status: "False Positive"
+    description: |
+      This is a false positive.  The vulnerable code from <code>libpng</code>
+      only exists in <code>libsplashscreen.so</code>, which is not part of any
+      <code>java-*-openjdk-headless</code> package.  The vulnerable library is
+      distributed in <code>java-*-openjdk</code>, which is not installed in this
+      container image. Red Hat has confirmed that while the affected code is
+      present in the bundled sources, it is not exercised by headless packages.
+
+  - cve: CVE-2026-22693
+    locations_pattern: "contains:headless"
+    status: "False Positive"
+    description: |
+      This is a false positive.  This vulnerability is in HarfBuzz's
+      <code>SubtableUnicodesCache::create</code> function, which is used by
+      the <code>java.desktop</code> module.  As noted on Red Hat's CVE page,
+      <code>java-17-openjdk-headless</code> and
+      <code>java-21-openjdk-headless</code> packages do not include
+      <code>java.desktop</code> and do not link against HarfBuzz; therefore,
+      headless-only environments are not affected.
+
+  - cve: CVE-2026-23865
+    locations_pattern: "contains:headless"
+    status: "False Positive"
+    description: |
+      This is a false positive.  This vulnerability is in FreeType's
+      <code>tt_var_load_item_variation_store</code> function, which is used
+      for font rendering in the <code>java.desktop</code> module.
+      <code>java-*-openjdk-headless</code> packages do not include
+      <code>java.desktop</code> and do not link against FreeType; therefore,
+      headless-only environments are not affected.
+
   - cve: CVE-2024-54534
     status: "False Positive"
     description: |
