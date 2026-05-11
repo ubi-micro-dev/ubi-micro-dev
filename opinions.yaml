@@ -134,6 +134,22 @@ opinions:
       not <code>libtasn1</code>.  Scanners are flagging this package because it is built from the same source package
       as <code>libtasn1-tools</code>.
 
+  - cve: CVE-2025-13151
+    components: [libtasn1]
+    status: "Ignorable"
+    description: |
+      The vulnerable function <code>asn1_expand_octet_string</code> is
+      exported by <code>libtasn1.so.6</code> but is not called by any
+      library in this container image.  All 94 shared libraries were
+      checked for dynamic relocations (<code>objdump -R</code>),
+      undefined symbol imports (<code>nm -D</code>), and raw string
+      references (<code>strings</code>) — zero results outside
+      libtasn1 itself.  <code>libgnutls</code> and
+      <code>p11-kit-trust</code> link against libtasn1 for DER
+      encoding/decoding but do not use this specific utility function.
+      The vulnerability is a one-byte stack buffer off-by-one, fixed
+      in libtasn1 4.21.0.
+
   - cve: CVE-2025-50182
     status: "False Positive"
     description: |
