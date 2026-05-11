@@ -81,6 +81,34 @@ opinions:
       do not configure <code>nsswitch.conf</code> with glibc's DNS
       backend, so the vulnerable code path cannot be reached.
 
+  - cve: CVE-2026-5928
+    status: "Ignorable"
+    description: |
+      This vulnerability requires calling <code>ungetwc()</code> on a
+      wide-character stream with specific overlapping single-byte and
+      multi-byte encodings.  None of the runtimes in these container
+      images use glibc's <code>ungetwc</code> function: the JVM handles
+      character encoding via its own converters, Node.js uses V8/libuv,
+      and Python uses its own codec system.  Container inspection
+      confirms no shared library in the image links against
+      <code>ungetwc</code>.  Additionally, the <code>ungetwc</code>
+      symbol can be localized in <code>libc.so.6</code> via ELF
+      <code>.dynsym</code> patching to prevent any future dynamic
+      linking without breaking glibc internals.
+
+  - cve: CVE-2026-5450
+    status: "Ignorable"
+    description: |
+      This vulnerability requires calling <code>scanf</code> with the
+      <code>%mc</code> format specifier and an explicit width greater
+      than 1024.  While <code>sscanf</code> is used by the JVM
+      (<code>libjli.so</code>), it is called with hardcoded format
+      strings that do not use <code>%mc</code>.  The vulnerable code
+      path is only reachable if native (JNI) code or a subprocess
+      calls <code>scanf</code> with an attacker-controlled format
+      string containing <code>%mc</code> — an unusual and unlikely
+      pattern.
+
   # Multiple ncurses CVEs with same issue
   - cves: [CVE-2023-50495, CVE-2021-39537, CVE-2020-19190, CVE-2020-19189,
            CVE-2020-19188, CVE-2020-19187, CVE-2020-19186, CVE-2020-19185,
